@@ -19,4 +19,4 @@ typedef struct connection {
 
 void printConnection(CONNECTION c);
 
-CONNECTION createConnection(char* name, char* word1, char* word2, char* word3, char* word4);
+CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MAXWORD]);

@@ -7,14 +7,22 @@ void printConnection(CONNECTION c) {
 	fprintf(stdout, "Name: %s\n", c.name);
 	for (int i = 0; i < MAXCONNECTIONS; i++) {
 		fprintf(stdout, "Connecetion %d: %s\n", i, c.words[i]);
-		fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
-		fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
-		fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
+		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
+		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
+		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
 	}
 }
 
-CONNECTION createConnection(char* name, char* word1, char* word2, char* word3, char* word4) {
+CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MAXWORD]) {
 	CONNECTION c;
 	strncpy(c.name, name, MAXWORD);
+
+	for (int i = 0; i < MAXCONNECTIONS; i++) {
+		strncpy(c.words[i], wordList[i], MAXWORD);
+	}
+
+	// for testing
+	printConnection(c);
+
 	return c;
 }

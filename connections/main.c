@@ -15,7 +15,7 @@ int main(void) {
 	srand(time(NULL));
 
 	// list of connections for game
-	CONNECTION test;
+	//CONNECTION test;
 
 	// read file data
 	if (loadData(FILE) == false) {
