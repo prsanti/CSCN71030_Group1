@@ -4,18 +4,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "file.h"
 #include "connection.h"
 
 #define FILE "connectionsData.txt"
 
 int main(void) {
+	// randomize by time
+	srand(time(NULL));
+
 	// list of connections for game
 	CONNECTION test;
 
 	// read file data
 	if (loadData(FILE) == false) {
-		fprintf(stdout, "Error reading file data\n");
+		// close program with error
 		exit(EXIT_FAILURE);
 	}
 

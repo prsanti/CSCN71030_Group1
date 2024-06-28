@@ -18,3 +18,5 @@ typedef struct connection {
 } CONNECTION;
 
 void printConnection(CONNECTION c);
+
+CONNECTION createConnection(char* name, char* word1, char* word2, char* word3, char* word4);

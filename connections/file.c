@@ -3,18 +3,43 @@
 
 #include "file.h"
 
+// function to count the number of lines in a file
+// allows us to add more connections without having a static count
+int countLines(FILE* fp) {
+	int lines = 0;
+	char ch;
+
+	// loop until end of file
+	while (!feof(fp)) {
+		ch = fgetc(fp);
+		// read each line until '\n'
+		if (ch == '\n') {
+			// increment lines by 1
+			lines++;
+		}
+	}
+
+	// reset file pointer to beginning of file
+	fseek(fp, 0, SEEK_SET);
+
+	return lines;
+}
+
 bool loadData(char* filename) {
 	FILE* fp = fopen(filename, "r");
 
 	if (fp == NULL) {
 		fprintf(stderr, "Error opening file\n");
 		return false;
-		//exit(EXIT_FAILURE);
 	}
+
+	// get total lines from file
+	int lines = countLines(fp);
+	printf("lines: %d\n", lines);
 
 	CONNECTION c1, c2, c3, c4;
 
-	char buffer[MAXBUFFER];
+	char buffer[MAXBUFFER] = '\0';
 
 	char name[MAXWORD];
 	char w1[MAXWORD], w2[MAXWORD], w3[MAXWORD], w4[MAXWORD];
@@ -28,13 +53,21 @@ bool loadData(char* filename) {
 
 		// get string up to ':'
 		char* token = strtok(buffer, ":");
+		strncpy(name, token, MAXWORD);
 		fprintf(stdout, "name: %s\n", token);
 
 		while (token != NULL) {
-			fprintf(stdout, "word: %s\n", token);
 			// get string up to ', '
 			token = strtok(NULL, ", ");
+
+			// check if token is null and end loop (last word bug)
+			if (token == NULL) {
+				return;
+			}
+
+			fprintf(stdout, "word: %s\n", token);
 			// set
+
 		}
 	}
 

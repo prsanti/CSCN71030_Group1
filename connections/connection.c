@@ -12,3 +12,9 @@ void printConnection(CONNECTION c) {
 		fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
 	}
 }
+
+CONNECTION createConnection(char* name, char* word1, char* word2, char* word3, char* word4) {
+	CONNECTION c;
+	strncpy(c.name, name, MAXWORD);
+	return c;
+}
