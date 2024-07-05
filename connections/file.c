@@ -29,7 +29,6 @@ int countLines(FILE* fp) {
 void getRandomLine(FILE* fp, char** buffer) {
 	// get total lines from file
 	int lines = countLines(fp);
-	printf("total lines: %d\n", lines);
 	int currentLine = 0;
 
 	// generate random line
@@ -79,7 +78,7 @@ bool loadData(char* filename) {
 		getRandomLine(fp, buffer);
 		// set last char of buffer to null char
 		buffer[strlen(buffer) - 1] = '\0';
-		fprintf(stdout, "line: %s\n", buffer);
+		//fprintf(stdout, "line: %s\n", buffer);
 
 		// get string up to ':'
 		char* token = strtok(buffer, ":");
