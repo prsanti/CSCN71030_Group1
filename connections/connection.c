@@ -7,9 +7,6 @@ void printConnection(CONNECTION c) {
 	fprintf(stdout, "Name: %s\n", c.name);
 	for (int i = 0; i < MAXCONNECTIONS; i++) {
 		fprintf(stdout, "Connecetion %d: %s\n", i, c.words[i]);
-		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
-		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
-		//fprintf(stdout, "Connecetion %d %s\n", i, c.words[i]);
 	}
 }
 

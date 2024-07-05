@@ -14,9 +14,6 @@ int main(void) {
 	// randomize by time
 	srand(time(NULL));
 
-	// list of connections for game
-	//CONNECTION test;
-
 	// read file data
 	if (loadData(FILE) == false) {
 		// close program with error
