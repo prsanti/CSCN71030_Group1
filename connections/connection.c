@@ -19,7 +19,8 @@ CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MA
 	}
 
 	// for testing
-	printConnection(c);
+	//printf("Connection created:\n");
+	//printConnection(c);
 
 	return c;
 }
