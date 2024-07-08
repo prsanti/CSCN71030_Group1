@@ -74,7 +74,6 @@ bool loadData(char* filename) {
 
 	for (int i = 0; i < TOTALCONNECTIONS; i++) {
 		// read random line of text and set it to buffer
-		//fgets(buffer, MAXWORD, fp);
 		getRandomLine(fp, buffer);
 		// set last char of buffer to null char
 		buffer[strlen(buffer) - 1] = '\0';
