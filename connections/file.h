@@ -17,4 +17,4 @@ int countLines(FILE* fp);
 
 void getRandomLine(FILE* fp, char** buffer);
 
-bool loadData(char* filename, NODE*);
+bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]);

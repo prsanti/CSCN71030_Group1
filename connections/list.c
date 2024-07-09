@@ -5,34 +5,16 @@
 
 #include "list.h"
 
-void addToList(NODE* ptr, CONNECTION connectArr[MAXCONNECTIONS]) {
-	//for (int i = 0; i < counter; i++) {
-	//	ptr->c = connect;
-	//	ptr->next = (NODE*)malloc(sizeof(struct node));
+void createList(NODE* ptr, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
+	for (int i = 0; i < TOTALCONNECTIONS; i++) {
+		ptr->c = *connectionArr[i];
+		
+		ptr->next = (NODE*)malloc(sizeof(NODE));
 
-	//	if (ptr->next == NULL) {
-	//		printf("Error allocating memory\n");
-	//		break;
-	//	}
-
-	//	ptr = ptr->next;
-	//}
-	//ptr->next = NULL;
-
-	// print connection
-	//for (int i = 0; i < MAXCONNECTIONS; i++) {
-	//	printf("print in list\n");
-	//	printConnection(connectArr[i]);
-	//}
-
-	for (int i = 0; i < MAXCONNECTIONS; i++) {
-		ptr->c = connectArr[i];
-		ptr->next = (NODE*)malloc(sizeof(struct node));
-
-			if (ptr->next == NULL) {
-				printf("Error allocating memory\n");
-				break;
-			}
+		if (ptr->next == NULL) {
+			printf("Error allocating memory\n");
+			break;
+		}
 
 		ptr = ptr->next;
 	}
@@ -44,5 +26,24 @@ void addToList(NODE* ptr, CONNECTION connectArr[MAXCONNECTIONS]) {
 void traverse(NODE* ptr) {
 	while (ptr->next != NULL) {
 		printConnection(ptr->c);
+		ptr = ptr->next;
+	}
+}
+
+// traverse and free each node
+void deleteNode(NODE* ptr) {
+	while (ptr->next != NULL) {
+		NODE* temp;
+		temp = ptr;
+
+		// for testing free node
+		//printf("Deleting node:\n");
+		//printConnection(temp->c);
+
+		// set pointer to next node
+		ptr = ptr->next;
+
+		// free current node
+		free(temp);
 	}
 }

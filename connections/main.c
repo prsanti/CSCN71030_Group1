@@ -16,19 +16,25 @@ int main(void) {
 	srand(time(NULL));
 
 	// initialize head of linked list
-	NODE* head = (NODE*)malloc(sizeof(struct node));
+	NODE* head = (NODE*)malloc(sizeof(NODE));
+
+	CONNECTION *connectionArr[TOTALCONNECTIONS];
 
 	// read file data and load data into linked list
-	if (loadData(FILE, head) == false) {
+	if (loadData(FILE, &connectionArr) == false) {
 		// close program with error
 		exit(EXIT_FAILURE);
 	}
 
+	//for (int i = 0; i < TOTALCONNECTIONS; i++) {
+	//	printConnection(*connectionArr[i]);
+	//}
+
+	createList(head, connectionArr);
+
 	traverse(head);
 
-
-
-	free(head);
+	deleteNode(head);
 
 	return 0;
 }
