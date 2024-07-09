@@ -5,8 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "file.h"
 #include "connection.h"
+#include "list.h"
+#include "file.h"
 
 #define FILE "connectionsData.txt"
 
@@ -14,12 +15,20 @@ int main(void) {
 	// randomize by time
 	srand(time(NULL));
 
-	// read file data
-	if (loadData(FILE) == false) {
+	// initialize head of linked list
+	NODE* head = (NODE*)malloc(sizeof(struct node));
+
+	// read file data and load data into linked list
+	if (loadData(FILE, head) == false) {
 		// close program with error
 		exit(EXIT_FAILURE);
 	}
 
+	traverse(head);
+
+
+
+	free(head);
 
 	return 0;
 }

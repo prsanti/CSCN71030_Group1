@@ -7,6 +7,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "connection.h"
+#include "list.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -16,4 +17,4 @@ int countLines(FILE* fp);
 
 void getRandomLine(FILE* fp, char** buffer);
 
-bool loadData(char* filename);
+bool loadData(char* filename, NODE*);

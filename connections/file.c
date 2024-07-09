@@ -2,6 +2,8 @@
 // Group 1 - Paul, Iggy, Karl, Alli
 
 #include "file.h"
+#include "connection.h"
+#include "list.h"
 
 // function to count the number of lines in a file
 // allows us to add more connections without having a static count
@@ -57,7 +59,7 @@ void getRandomLine(FILE* fp, char** buffer) {
 	}
 }
 
-bool loadData(char* filename) {
+bool loadData(char* filename, NODE* ptr) {
 	FILE* fp = fopen(filename, "r");
 
 	if (fp == NULL) {
@@ -65,7 +67,8 @@ bool loadData(char* filename) {
 		return false;
 	}
 
-	CONNECTION c1, c2, c3, c4;
+	//CONNECTION c1 = { '\0', {'\0'} }, c2 = { '\0', {'\0'} }, c3 = { '\0', {'\0'} }, c4 = { '\0', {'\0'} };
+	CONNECTION connectionArr[MAXCONNECTIONS];
 
 	char buffer[MAXBUFFER] = { '\0' };
 
@@ -85,7 +88,7 @@ bool loadData(char* filename) {
 		//fprintf(stdout, "name: %s\n", token);
 
 		// loop counter for words array
-		int i = 0;
+		int j = 0;
 
 		while (token != NULL) {
 			// get string up to ', '
@@ -98,13 +101,64 @@ bool loadData(char* filename) {
 
 			//fprintf(stdout, "word: %s\n", token);
 			// set word array to token
-			strncpy(words[i], token, MAXWORD);
+			strncpy(words[j], token, MAXWORD);
+			//connectionArr[i] = createConnection(name, words);
 
-			i++;
+			j++;
 		}
 		// create connection
-		createConnection(name, words);
+		//CONNECTION newConnection = createConnection(name, words);
+		connectionArr[i] = createConnection(name, words);
+		//printConnection(newConnection);
+		//switch (i) {
+		//	case 0:
+		//		c1 = newConnection;
+		//		break;
+		//	case 1:
+		//		c2 = newConnection;
+		//		break;
+		//	case 2:
+		//		c3 = newConnection;
+		//		break;		
+		//	default:
+		//		c4 = newConnection;
+		//		break;
+		//}
+
+		//CONNECTION connectionArr[MAXCONNECTIONS] = { c1, c2, c3, c4 };
+
+		
+		/*connectionArr[i] = newConnection;*/
+
+		// create connection and create linked list
+		//CONNECTION newConnection = createConnection(name, words);
+		////addToList(ptr, newConnection, MAXCONNECTIONS);
+		//ptr->c = newConnection;
+		//ptr->next = (NODE*)malloc(sizeof(struct node));
+
+		//if (ptr->next == NULL) {
+		//	printf("Error allocating memory\n");
+		//	break;
+		//}
+
+		//ptr = ptr->next;
 	}
+
+	//ptr->next = NULL;
+
+	//connectionArr[0] = c1;
+	//connectionArr[1] = c2;
+	//connectionArr[2] = c3;
+	//connectionArr[3] = c4;
+
+	//addToList(ptr, connectionArr);
+
+	//for (int i = 0; i < 4; i++) {
+	//	printf("print con in file\n");
+	//	printConnection(connectionArr[i]);
+	//}
+
+	addToList(ptr, connectionArr);
 
 	return true;
 }

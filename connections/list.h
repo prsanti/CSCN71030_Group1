@@ -12,6 +12,7 @@ typedef struct node {
 	struct node* next;
 } NODE;
 
-void create(NODE*);
+void addToList(NODE*, CONNECTION connectArr[MAXCONNECTIONS]);
 
+// print and traverse connection of each node
 void traverse(NODE*);

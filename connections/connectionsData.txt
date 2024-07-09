@@ -8,7 +8,7 @@ What Humpback Whales Do: BREACH, DIVE, SING, SPOUT
 ___City: MAGIC, MOTOR, SIN, WINDY
 Bits of Hardware: NAIL, NUT, SCREW, WASHER
 Fishing Gear: FLY, HOOK, LINE, SINKER
-Hair Salon Fixtures CHAIR, DRYER, MIRROR, SINK
+Hair Salon Fixtures: CHAIR, DRYER, MIRROR, SINK
 Lightning___: BOLT, BUG, ROD, STRIKE
 Conformists: FOLLOWERS, LEMMINGS, PUPPETS, SHEEP
 Company Ownership Offers: EQUITY, OPTIONS, SHARES, STOCKS
