@@ -3,6 +3,7 @@
 
 #include "connection.h"
 
+// print connection for testing
 void printConnection(CONNECTION c) {
 	fprintf(stdout, "Name: %s\n", c.name);
 	for (int i = 0; i < MAXCONNECTIONS; i++) {
@@ -10,6 +11,7 @@ void printConnection(CONNECTION c) {
 	}
 }
 
+// create a connection with a category name and array of 4 words
 CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MAXWORD]) {
 	CONNECTION c;
 	strncpy(c.name, name, MAXWORD);
@@ -23,4 +25,9 @@ CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MA
 	//printConnection(c);
 
 	return c;
+}
+
+// copy a connection from a source
+CONNECTION copyConnection(CONNECTION src) {
+	return createConnection(src.name, src.words);
 }

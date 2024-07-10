@@ -7,13 +7,19 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "connection.h"
+#include "list.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 
+// function to count the number of lines in a file
+// allows us to add more connections without having a static count
 int countLines(FILE* fp);
 
+// get random line from text file data
 void getRandomLine(FILE* fp, char** buffer);
 
-bool loadData(char* filename);
+// load data from connectionData.txt
+// set data to connectionArr to be used for creating linked list
+bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]);
