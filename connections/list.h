@@ -15,6 +15,7 @@ typedef struct node {
 	struct node* next;
 } NODE;
 
+// create linked list
 void createList(NODE*, CONNECTION* connectArr[TOTALCONNECTIONS]);
 
 // print and traverse connection of each node

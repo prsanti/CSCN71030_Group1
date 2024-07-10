@@ -25,4 +25,5 @@ void printConnection(CONNECTION c);
 // create a connection with a category name and array of 4 words
 CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MAXWORD]);
 
+// copy a connection from a source
 CONNECTION copyConnection(CONNECTION src);

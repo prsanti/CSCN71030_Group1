@@ -18,6 +18,7 @@ int main(void) {
 	// initialize head of linked list
 	NODE* head = (NODE*)malloc(sizeof(NODE));
 
+	// create pointer array of connections
 	CONNECTION *connectionArr[TOTALCONNECTIONS];
 
 	// read file data and load data into linked list
@@ -26,14 +27,13 @@ int main(void) {
 		exit(EXIT_FAILURE);
 	}
 
-	//for (int i = 0; i < TOTALCONNECTIONS; i++) {
-	//	printConnection(*connectionArr[i]);
-	//}
-
+	// create linked list
 	createList(head, connectionArr);
 
-	traverse(head);
+	// traverse linked list
+	//traverse(head);
 
+	// delete and free nodes from linked list
 	deleteNode(head);
 
 	return 0;

@@ -27,6 +27,7 @@ CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MA
 	return c;
 }
 
+// copy a connection from a source
 CONNECTION copyConnection(CONNECTION src) {
 	return createConnection(src.name, src.words);
 }

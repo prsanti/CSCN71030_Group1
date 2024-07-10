@@ -8,6 +8,8 @@
 // function to count the number of lines in a file
 // allows us to add more connections without having a static count
 int countLines(FILE* fp) {
+	// potential debug
+	// set lines to 1 and adjust file to start at 1
 	int lines = 0;
 	char ch;
 
@@ -34,6 +36,7 @@ void getRandomLine(FILE* fp, char** buffer) {
 	int currentLine = 0;
 
 	// generate random line
+	//Unhandled exception at 0x00007FF7F8331D31 in connections.exe: 0xC0000094 : Integer division by zero. (see line 11)
 	int randomLine = rand() % lines;
 
 	char ch = { '\0' };
@@ -59,18 +62,22 @@ void getRandomLine(FILE* fp, char** buffer) {
 	}
 }
 
+// load data from connectionData.txt
+// set data to connectionArr to be used for creating linked list
 bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
+	// read connectionsData.txt
 	FILE* fp = fopen(filename, "r");
 
+	// print error if cannot open file
 	if (fp == NULL) {
 		fprintf(stderr, "Error opening file\n");
 		return false;
 	}
 
-	//CONNECTION connectionArr[MAXCONNECTIONS];
-
+	// char buffer
 	char buffer[MAXBUFFER] = { '\0' };
 
+	// chars to assign to array of connections
 	char name[MAXWORD];
 	char words[MAXCONNECTIONS][MAXWORD];
 
@@ -108,24 +115,19 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 
 		// Allocate memory for each connection
 		connectionArr[i] = (CONNECTION*)malloc(sizeof(CONNECTION));
+
+		// print error if cannot allocate memory to array
 		if (connectionArr[i] == NULL) {
 			fprintf(stderr, "Cannot allocate memory to connection array\n");
-			//fclose(fp);
 			return false;
 		}
 
 		// create connection and set to array
 		*connectionArr[i] = createConnection(name, words);
+		// for testing created connections
 		//printConnection(*connectionArr[i]);
 	}
 
-	// for testing created connections
-	//for (int i = 0; i < TOTALCONNECTIONS; i++) {
-	//	printf("testing connection array\n");
-	//	printConnection(connectionArr[i]);
-	//}
-
-	//addToList(ptr, connectionArr);
-
+	// successful read and assigning data to array
 	return true;
 }

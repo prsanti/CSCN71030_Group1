@@ -13,8 +13,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+// function to count the number of lines in a file
+// allows us to add more connections without having a static count
 int countLines(FILE* fp);
 
+// get random line from text file data
 void getRandomLine(FILE* fp, char** buffer);
 
+// load data from connectionData.txt
+// set data to connectionArr to be used for creating linked list
 bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]);

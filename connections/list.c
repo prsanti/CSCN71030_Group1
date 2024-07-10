@@ -5,20 +5,27 @@
 
 #include "list.h"
 
+// create linked list
 void createList(NODE* ptr, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
+	// loop through total connections
 	for (int i = 0; i < TOTALCONNECTIONS; i++) {
+		// set pointer to connection of array
 		ptr->c = *connectionArr[i];
 		
+		// allocate memory for next node
 		ptr->next = (NODE*)malloc(sizeof(NODE));
 
+		// print error messege for allocating memory
 		if (ptr->next == NULL) {
 			printf("Error allocating memory\n");
 			break;
 		}
 
+		// set pointer to next
 		ptr = ptr->next;
 	}
 
+	// set last pointer next to NULL
 	ptr->next = NULL;
 }
 
