@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="connection.c" />
     <ClCompile Include="file.c" />
+    <ClCompile Include="Highscore.c" />
     <ClCompile Include="list.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="connection.h" />
     <ClInclude Include="file.h" />
+    <ClInclude Include="Highscore.h" />
     <ClInclude Include="list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
