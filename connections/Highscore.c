@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
+// Initializes the high scores list by setting the number of scores to 0
 void initializeHighscores(HIGHSCORE* s) {
     s->numscores = 0;
     for (int i = 0; i < MAX_SCORES; i++) {
@@ -12,6 +13,8 @@ void initializeHighscores(HIGHSCORE* s) {
     }
 }
 
+// Adds a new score to the high scores list
+
 void addScore(HIGHSCORE* s, char* playerName, int score) {
     if (s->numscores < MAX_SCORES) {
         strcpy(s->scores[s->numscores].name, playerName);
@@ -19,7 +22,8 @@ void addScore(HIGHSCORE* s, char* playerName, int score) {
         s->numscores++;
     }
     else {
-        // Replace the lowest score if the list is full and this score is higher
+        // If the list is full, it replaces the lowest score if the new score is higher
+       
         int lowestScoreIndex = 0;
         for (int i = 1; i < MAX_SCORES; i++) {
             if (s->scores[i].score < s->scores[lowestScoreIndex].score) {
@@ -33,6 +37,7 @@ void addScore(HIGHSCORE* s, char* playerName, int score) {
     }
 }
 
+// Prints the high scores list
 void printHighscores(HIGHSCORE s) {
     printf("Highscores:\n");
     for (int i = 0; i < s.numscores; i++) {
