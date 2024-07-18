@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="connection.c" />
     <ClCompile Include="file.c" />
+    <ClCompile Include="game.c" />
     <ClCompile Include="Highscore.c" />
     <ClCompile Include="list.c" />
     <ClCompile Include="main.c" />
