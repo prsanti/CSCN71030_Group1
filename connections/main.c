@@ -8,7 +8,6 @@
 #include "connection.h"
 #include "list.h"
 #include "file.h"
-#include "game.h"
 
 #define FILE "connectionsData.txt"
 
@@ -33,15 +32,6 @@ int main(void) {
 
 	// traverse linked list
 	//traverse(head);
-
-	//initialize game state
-	GAME_STATE gameState;
-	initializeGame(&gameState, head);
-
-	printGameState(&gameState);
-
-	startGame(&gameState);
-
 
 	// delete and free nodes from linked list
 	deleteNode(head);
