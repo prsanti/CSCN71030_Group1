@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="connection.h" />
     <ClInclude Include="file.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="Highscore.h" />
     <ClInclude Include="list.h" />
   </ItemGroup>
