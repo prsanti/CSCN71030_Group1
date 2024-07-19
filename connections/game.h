@@ -11,6 +11,7 @@
 #define MIN_LIVES 0
 #define MAX_WORDS_PER_GUESS 4
 
+#include <ctype.h>
 #include "connection.h"
 #include "list.h"
 #include "Highscore.h"
@@ -32,8 +33,30 @@ void printGameState(const GAME_STATE* gameState);
 
 
 int validateGuess(GAME_STATE* gameState, const char* guess);
-void splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess);
+int splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess);
+
+
+
+bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
+
+
+
+
+
+
 
 // helper functions
 void getUserInputGuess(char* guess, int size);
 void resetGuess(char* guess, int size);
+
+// Function to capitalize a string
+void capitalizeString(char* str);
+
+
+
+
+
+// help with testing functions;
+
+// These functions are just for helping me test
+void printWordsAfterSplit(char* splitGuess[], int word_count);
