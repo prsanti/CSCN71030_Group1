@@ -13,23 +13,23 @@ void initializeGame(GAME_STATE* gameState, NODE* head)
 
 void startGame(GAME_STATE* gameState)
 {
-
+    char guess[MAXBUFFER];                 // user input buffer
+    char* splitGuess[MAX_WORDS_PER_GUESS]; // array where words will be stored
+    int numWordsInGuess;                   // number of words in the guess
 
     // main game loop - 4 lives
     while (gameState->lives > 0)
     {
+        // print player info
         printGameState(gameState);
 
-        char guess[MAXBUFFER];
-
+        // ask user for input
         getUserInputGuess(guess, MAXBUFFER);
 
         // parse the guess into separate words
-        char* words[MAX_WORDS_PER_GUESS];      // array where words will be stored
-        int test = splitGuessIntoWords(guess, words, MAX_WORDS_PER_GUESS);
+        splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
 
-        printf("Number of words in guess: %d\n\n\n\n", test);
-
+        // reset guess
         resetGuess(guess, MAXBUFFER);
 
 
@@ -53,17 +53,28 @@ int validateGuess(GAME_STATE* gameState, const char* guess)
 
 }
 
-int splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess)
+void splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess)
 {
+    printf("printing the guess before split: %s\n", guess);
+
     int word_count = 0;
     char* word = strtok(guess, " ");
 
-    while (word != NULL && word_count < max_words_per_guess) {
-        words[word_count] = word; // store the word
-        word_count++;
+    while (word != NULL && word_count < max_words_per_guess) 
+    {
+        splitGuess[word_count] = word; // store the word
+        word_count++;                                                           // currently maxes out at 4 even if you type more than 4
         word = strtok(NULL, " ");
     }
-    return word_count;
+
+    printf("Number of words in guess: %d\n", word_count);
+
+    printf("printing the guess after  split: \n");
+
+    for (int i = 0; i < word_count; i++)
+    {
+        printf("%s\n", splitGuess[i]);
+    }
 }
 
 void getUserInputGuess(char* guess, int size)

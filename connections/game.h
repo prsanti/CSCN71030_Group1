@@ -32,7 +32,7 @@ void printGameState(const GAME_STATE* gameState);
 
 
 int validateGuess(GAME_STATE* gameState, const char* guess);
-
+void splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess);
 
 // helper functions
 void getUserInputGuess(char* guess, int size);
