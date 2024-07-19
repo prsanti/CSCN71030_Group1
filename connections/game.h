@@ -32,3 +32,8 @@ void printGameState(const GAME_STATE* gameState);
 
 
 int validateGuess(GAME_STATE* gameState, const char* guess);
+
+
+// helper functions
+void getUserInputGuess(char* guess, int size);
+void resetGuess(char* guess, int size);
