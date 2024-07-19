@@ -1,48 +1,80 @@
 // CSCN71030 - Spring 2024 - Project 2: Connections
 // Group 1 - Paul, Iggy, Karl, Alli
 
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "connection.h"
 #include "list.h"
 #include "file.h"
-
 #include "game.h"
+#include "menu.h"
 
-#define FILE "connectionsData.txt"
+#define FILENAME "connectionsData.txt"
 
 int main(void) {
-	// randomize by time
-	srand(time(NULL));
+    //randomize by time
+    srand(time(NULL));
 
-	// initialize head of linked list
-	NODE* head = (NODE*)malloc(sizeof(NODE));
+    //create pointer array of connections
+    CONNECTION* connectionArr[TOTALCONNECTIONS];
 
-	// create pointer array of connections
-	CONNECTION *connectionArr[TOTALCONNECTIONS];
+    //read file data and load data into connection array
+    if (!loadData(FILENAME, connectionArr)) {
+        //close program with error
+        exit(EXIT_FAILURE);
+    }
 
-	// read file data and load data into linked list
-	if (loadData(FILE, &connectionArr) == false) {
-		// close program with error
-		exit(EXIT_FAILURE);
-	}
+    NODE* head = NULL;
+    GAME_STATE gameState;
+    int choice;
 
-	// create linked list
-	createList(head, connectionArr);
+    do {
+        choice = displayMenu();
+        switch (choice) {
+        case 1:
+            //allocate memory for the head node
+            head = (NODE*)malloc(sizeof(NODE));
+            if (head == NULL) {
+                fprintf(stderr, "Error allocating memory for head node\n");
+                exit(EXIT_FAILURE);
+            }
 
-	// traverse linked list
-	//traverse(head);
+            //create linked list
+            createList(head, connectionArr);
 
-	//initialize game state
-	GAME_STATE gameState;
-	initializeGame(&gameState, head);
-	printGameState(&gameState);
-	startGame(&gameState);
+            //initialize and start the game
+            initializeGame(&gameState, head);
+            printGameState(&gameState);
+            startGame(&gameState);
 
-	// delete and free nodes from linked list
-	deleteNode(head);
+            //free the linked list after the game ends
+            deleteNode(head);
+            free(head);
+            head = NULL; //set head to NULL after freeing
+            break;
 
-	return 0;
+        case 2:
+            //print highscores (implement this function as needed)
+            //printHighscores(highscore);
+            break;
+
+        case 3:
+            printf("Exiting game. See you soon!!!\n");
+            break;
+
+        default:
+            printf("Invalid choice. Please try again.\n");
+            break;
+        }
+    } while (choice != 3);
+
+    //free memory allocated for connections
+    for (int i = 0; i < TOTALCONNECTIONS; i++) {
+        free(connectionArr[i]);
+    }
+
+    return 0;
 }
+
