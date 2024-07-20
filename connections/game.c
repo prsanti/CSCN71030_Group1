@@ -11,9 +11,10 @@ void initializeGame(GAME_STATE* gameState, NODE* head)
     gameState->lives = MAX_LIVES; // set the lives
 }
 
+
 void startGame(GAME_STATE* gameState)
 {
-
+    // where result is stored
     // main game loop - 4 lives
     while (gameState->lives > 0)
     {
@@ -23,7 +24,9 @@ void startGame(GAME_STATE* gameState)
         char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };  // array where words will be stored
         int numWordsInGuess = 0;                        // number of words in the guess
 
-        GUESS_RESULT guessResult;                       // where result is stored
+
+        GUESS_RESULT guessResult;
+
 
         // print player info
         printGameState(gameState);
@@ -50,7 +53,13 @@ void startGame(GAME_STATE* gameState)
         // check guess in connection
         guessResult = isGuessAConnection(gameState, splitGuess);
 
-        if (guessResult.isConnection) 
+        //check if guess was already guessed
+        //if (guessResult.matchedConnection->c.wasGuessed == true)
+        //{
+        //    printf("Connection already Guessed\n");
+        //}
+        //check if guess was correct
+        if (guessResult.isConnection)
         {
             printf("Correct Guess!\n");
             printf("Connection made: %s\n", guessResult.matchedConnection->c.name);
@@ -115,7 +124,7 @@ void getUserInputGuess(char* guess, int size)
 // check if each word in the split word array is in a connection (PROCESS 1 guess)
 GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
 {
-    GUESS_RESULT result = { false, NULL }; // initializing result
+    GUESS_RESULT result = { false, NULL };
 
     int matchCount = 0;
 
@@ -145,6 +154,7 @@ GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
         {
             result.isConnection = true;
             result.matchedConnection = currentNode;
+            result.matchedConnection->c.wasGuessed = true;
             return result; // return early since a valid connection was found
         }
 
@@ -191,3 +201,10 @@ void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int spli
         splitGuess[i] = NULL;
     }
 }
+
+
+
+// writing this so i dont forget later
+// iterate through the linked list
+// check the bool flag of each connection,
+// if all are made, make a new game

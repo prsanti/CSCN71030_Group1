@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define MAXBUFFER			250
 #define MAXWORD				50
@@ -17,6 +18,7 @@
 typedef struct connection {
 	char name[MAXWORD];
 	char words[MAXCONNECTIONS][MAXWORD];
+	bool wasGuessed;
 } CONNECTION;
 
 // print connection for testing
