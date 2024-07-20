@@ -10,6 +10,7 @@
 #define MAX_LIVES 4
 #define MIN_LIVES 0
 #define MAX_WORDS_PER_GUESS 4
+#define WORDS_IN_ONE_CONNECTION 4
 
 #include <ctype.h>
 #include "connection.h"

@@ -33,8 +33,8 @@ void startGame(GAME_STATE* gameState)
         splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
 
 
-
-
+        // check guess in connection
+        isGuessAConnection(gameState, splitGuess);
         
 
 
@@ -100,18 +100,40 @@ void resetGuess(char* guess, int size)
 
 
 
+// BUG - works only if user types in 4 guesses, otherwise theres an issue.
+// check if each word in the split word array is in a connection (PROCESS 1 guess)
+bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
+{
+    int matchCount = 0;
 
-//// check if each word in the split word array is in a connection - check if there is 4 matches. 
-//bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
-//{
-//    // loop through each word in the split guess array
-//    for (int i = 0; i < MAX_WORDS_PER_GUESS; i++)
-//    {
-//        // check if that word is in the connection list
-//        if(splitGuess[i] ==)
-//    }
-//
-//}
+    // start at the first set of connections (1 of 4)
+    NODE* currentNode = gameState->head;
+
+    // traverse the linked list
+    while (currentNode != NULL)
+    {
+        // loop through each word in the array of split guesses
+        for (int i = 0; i < MAX_WORDS_PER_GUESS; i++)
+        {
+            // loop through the words in the current node's connection
+            for (int j = 0; j < WORDS_IN_ONE_CONNECTION; j++)
+            {
+                // check if the word matches
+                if (strcmp(splitGuess[i], currentNode->c.words[j]) == 0)
+                {
+                    matchCount++;
+                    break; // exit inner loop if a match is found
+                }
+            }
+        }
+        // go to the next node in the linked list
+        currentNode = currentNode->next;
+    }
+    // Check if there are at least 4 matches
+    return matchCount >= 4;
+}
+
+
 
 void capitalizeString(char* str)
 {
@@ -121,11 +143,6 @@ void capitalizeString(char* str)
         str++;
     }
 }
-
-
-
-
-
 
 
 // This function is just for helping me test
