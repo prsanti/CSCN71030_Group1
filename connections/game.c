@@ -13,38 +13,56 @@ void initializeGame(GAME_STATE* gameState, NODE* head)
 
 void startGame(GAME_STATE* gameState)
 {
-    char guess[MAXBUFFER];                 // user input buffer
-    char* splitGuess[MAX_WORDS_PER_GUESS]; // array where words will be stored
-    int numWordsInGuess;                   // number of words in the guess
 
     // main game loop - 4 lives
     while (gameState->lives > 0)
     {
+
+
+        char guess[MAXBUFFER] = { 0 };                  // user input buffer
+        char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };  // array where words will be stored
+        int numWordsInGuess = 0;                        // number of words in the guess
+
+        GUESS_RESULT guessResult;                       // where result is stored
+
         // print player info
         printGameState(gameState);
 
-        // ask user for input
-        getUserInputGuess(guess, MAXBUFFER);
+        do {
+            // reset the guess buffer and splitGuess array for each new attempt
+            resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
 
-        // capitalize the string;
-        capitalizeString(guess);
+            // ask user for input
+            getUserInputGuess(guess, MAXBUFFER);
 
-        // parse the guess into separate words
-        splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
+            // capitalize the string;
+            capitalizeString(guess);
 
+            // parse the guess into separate words
+            numWordsInGuess = splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
+
+            if (numWordsInGuess < 4) {
+                printf("Error: Please enter exactly 4 words. Example: red blue green yellow\n");
+            }
+
+        } while (numWordsInGuess < 4); // Repeat until exactly 4 words are entered
 
         // check guess in connection
-        isGuessAConnection(gameState, splitGuess);
-        
+        guessResult = isGuessAConnection(gameState, splitGuess);
 
+        if (guessResult.isConnection) 
+        {
+            printf("Correct Guess!\n");
+            printf("Connection made: %s\n", guessResult.matchedConnection->c.name);
+        }
+        else 
+        {
+            printf("Incorrect Guess!\n");
+            gameState->lives--; // Decrement lives for incorrect guess
+        }
 
-
-
-        // reset guess
-        resetGuess(guess, MAXBUFFER);
-
-
-        if (gameState->lives <= 0) {
+        if (gameState->lives <= 0) 
+        {
             printf("No lives left, Game Over!\n");
             break;
         }
@@ -68,7 +86,7 @@ int validateGuess(GAME_STATE* gameState, const char* guess)
 
 int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess)
 {
-    printf("\nprinting the guess before split: %s\n", guess);
+    //printf("\nprinting the guess before split: %s\n", guess);
 
     int word_count = 0;
     char* word = strtok(guess, " ");
@@ -79,7 +97,7 @@ int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess
         word = strtok(NULL, " ");
     }
 
-    printWordsAfterSplit(splitGuess, word_count);
+    //printWordsAfterSplit(splitGuess, word_count);
 
     return word_count;
 }
@@ -92,18 +110,13 @@ void getUserInputGuess(char* guess, int size)
     guess[strcspn(guess, "\n")] = '\0'; // remove newline character
 }
 
-void resetGuess(char* guess, int size)
-{
-    memset(guess, 0, size); // clear the guess buffer
-}
-
-
-
 
 // BUG - works only if user types in 4 guesses, otherwise theres an issue.
 // check if each word in the split word array is in a connection (PROCESS 1 guess)
-bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
+GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
 {
+    GUESS_RESULT result = { false, NULL }; // initializing result
+
     int matchCount = 0;
 
     // start at the first set of connections (1 of 4)
@@ -126,14 +139,23 @@ bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
                 }
             }
         }
+
+        // check if there are at least 4 matches in this connection
+        if (matchCount >= 4)
+        {
+            result.isConnection = true;
+            result.matchedConnection = currentNode;
+            return result; // return early since a valid connection was found
+        }
+
         // go to the next node in the linked list
         currentNode = currentNode->next;
     }
     // Check if there are at least 4 matches
-    return matchCount >= 4;
+    return result;
 }
 
-
+ 
 
 void capitalizeString(char* str)
 {
@@ -159,3 +181,13 @@ void printWordsAfterSplit(char* splitGuess[], int word_count)
     }
 }
 
+
+void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int splitGuessSize)
+{
+    memset(guess, 0, guessSize); // reset initial guess array
+
+    for (int i = 0; i < splitGuessSize; i++)  // reset the splitGuess array;
+    {
+        splitGuess[i] = NULL;
+    }
+}

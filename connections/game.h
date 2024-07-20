@@ -26,6 +26,12 @@ typedef struct game_state {
 } GAME_STATE;
 
 
+typedef struct guess_result {
+    bool isConnection;
+    NODE* matchedConnection;
+} GUESS_RESULT;
+
+
 void initializeGame(GAME_STATE* gameState, NODE* head);
 
 void startGame(GAME_STATE* gameState);
@@ -38,7 +44,7 @@ int splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess);
 
 
 
-bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
+GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
 
 
 
@@ -48,7 +54,7 @@ bool isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
 
 // helper functions
 void getUserInputGuess(char* guess, int size);
-void resetGuess(char* guess, int size);
+void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int splitGuessSize);
 
 // Function to capitalize a string
 void capitalizeString(char* str);
