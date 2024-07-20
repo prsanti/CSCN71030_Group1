@@ -44,3 +44,25 @@ void printHighscores(HIGHSCORE s) {
         printf("%d. %s - %d\n", i + 1, s.scores[i].name, s.scores[i].score);
     }
 }
+
+// Saving  the high scores to a file
+void saveHighscores(HIGHSCORE s, const char filename) {
+    FILE* file = fopen(filename, "wb");
+    if (file == NULL) {
+        printf("Error opening file for writing.\n");
+        return;
+    }
+    fwrite(&s, sizeof(HIGHSCORE), 1, file);
+    fclose(file);
+}
+
+// Loading high score
+void loadHighscores(HIGHSCORE* s, const char filename) {
+    FILE* file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("Error opening file for reading.\n");
+        return;
+    }
+    fread(s, sizeof(HIGHSCORE), 1, file);
+    fclose(file);
+}

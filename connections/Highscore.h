@@ -16,4 +16,6 @@ typedef struct highscore {
 
 void initializeHighscores(HIGHSCORE* s);
 void addScore(HIGHSCORE* s, char* playerName, int score);
-void printHighscores(HIGHSCORE s);
+void printHighscores(HIGHSCORE s); 
+void saveHighscores(HIGHSCORE s, const char filename);
+void loadHighscores(HIGHSCORE* s, const char filename);
