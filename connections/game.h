@@ -11,6 +11,7 @@
 #define MIN_LIVES 0
 #define MAX_WORDS_PER_GUESS 4
 
+
 #include "connection.h"
 #include "list.h"
 #include "Highscore.h"
@@ -30,5 +31,6 @@ void startGame(GAME_STATE* gameState);
 
 void printGameState(const GAME_STATE* gameState);
 
+void shuffleArray(char* array[], int size);
 
 int validateGuess(GAME_STATE* gameState, const char* guess);

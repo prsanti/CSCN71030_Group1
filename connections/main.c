@@ -1,6 +1,5 @@
 // CSCN71030 - Spring 2024 - Project 2: Connections
 // Group 1 - Paul, Iggy, Karl, Alli
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,15 +13,15 @@
 #define FILENAME "connectionsData.txt"
 
 int main(void) {
-    //randomize by time
+    // Randomize by time
     srand(time(NULL));
 
-    //create pointer array of connections
+    // Create pointer array of connections
     CONNECTION* connectionArr[TOTALCONNECTIONS];
 
-    //read file data and load data into connection array
+    // Read file data and load data into connection array
     if (!loadData(FILENAME, connectionArr)) {
-        //close program with error
+        // Close program with error
         exit(EXIT_FAILURE);
     }
 
@@ -34,30 +33,29 @@ int main(void) {
         choice = displayMenu();
         switch (choice) {
         case 1:
-            //allocate memory for the head node
+            // Allocate memory for the head node
             head = (NODE*)malloc(sizeof(NODE));
             if (head == NULL) {
                 fprintf(stderr, "Error allocating memory for head node\n");
                 exit(EXIT_FAILURE);
             }
 
-            //create linked list
+            // Create linked list
             createList(head, connectionArr);
 
-            //initialize and start the game
+            // Initialize and start the game
             initializeGame(&gameState, head);
-            printGameState(&gameState);
             startGame(&gameState);
 
-            //free the linked list after the game ends
+            // Free the linked list after the game ends
             deleteNode(head);
             free(head);
-            head = NULL; //set head to NULL after freeing
+            head = NULL; // Set head to NULL after freeing
             break;
 
         case 2:
-            //print highscores (implement this function as needed)
-            //printHighscores(highscore);
+            // Print highscores (implement this function as needed)
+            // printHighscores(highscore);
             break;
 
         case 3:
@@ -70,11 +68,10 @@ int main(void) {
         }
     } while (choice != 3);
 
-    //free memory allocated for connections
+    // Free memory allocated for connections
     for (int i = 0; i < TOTALCONNECTIONS; i++) {
         free(connectionArr[i]);
     }
 
     return 0;
 }
-
