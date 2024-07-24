@@ -49,7 +49,7 @@ GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
 
 
 
-
+void shuffleArray(char* array[], int size);
 
 
 // helper functions
@@ -67,3 +67,5 @@ void capitalizeString(char* str);
 
 // These functions are just for helping me test
 void printWordsAfterSplit(char* splitGuess[], int word_count);
+
+
