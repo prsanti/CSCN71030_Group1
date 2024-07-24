@@ -38,7 +38,6 @@ int main(void) {
 	//initialize game state
 	GAME_STATE gameState;
 	initializeGame(&gameState, head);
-	printGameState(&gameState);
 	startGame(&gameState);
 
 	// delete and free nodes from linked list

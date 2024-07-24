@@ -10,14 +10,14 @@ void initializeGame(GAME_STATE* gameState, NODE* head)
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
 
-    initializeConnections(head);
+    initializeConnections(head); // set the connections flag to false
 }
 
 void initializeConnections(NODE* head)
 {
     NODE* currentNode = head;
     while (currentNode != NULL) {
-        currentNode->c.wasGuessed = false;
+        currentNode->c.wasGuessed = false; // set the connections flag to false
         currentNode = currentNode->next;
     }
 }
@@ -25,11 +25,11 @@ void initializeConnections(NODE* head)
 
 void startGame(GAME_STATE* gameState)
 {
-    while (gameState->lives > 0)
+    while (gameState->lives > 0) 
     {
-        printGameState(gameState);
-        processGuess(gameState);
-        if (gameState->lives <= 0)
+        printGameState(gameState); // print the game
+        processGuess(gameState);   // get a guess and process it
+        if (gameState->lives <= 0) // after 4 lives are finished game is done
         {
             printf("No lives left, Game Over!\n");
         }
@@ -38,12 +38,15 @@ void startGame(GAME_STATE* gameState)
 
 void processGuess(GAME_STATE* gameState)
 {
-    char guess[MAXBUFFER] = { 0 };
-    char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };
-    int numWordsInGuess = 0;
-    GUESS_RESULT guessResult;
+    // initialize variables
+    char guess[MAXBUFFER] = { 0 };                  // used for getting input
+    char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };  // used for putting words into an array
+    int numWordsInGuess = 0;                        // used for counting if user typed in correct number of guesses
+    GUESS_RESULT guessResult;                       // used for returning which node is a connection
 
 
+    // get user input and make sure it is 4 words
+    // at the same time it puts each word into a string and capitalizes everything
     do {
         resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
         getUserInputGuess(guess, MAXBUFFER);
@@ -53,9 +56,10 @@ void processGuess(GAME_STATE* gameState)
         if (numWordsInGuess < MAX_WORDS_PER_GUESS) {
             printf("Error: Please enter exactly 4 words. Example: red blue green yellow\n");
         }
-    } while (numWordsInGuess < MAX_WORDS_PER_GUESS);
+    } while (numWordsInGuess < MAX_WORDS_PER_GUESS);    // will run until user enters 4 words
 
-    guessResult = isGuessAConnection(gameState, splitGuess);
+    // process guess
+    guessResult = isGuessAConnection(gameState, splitGuess); // this returns the correctly guessed node
 
     if (guessResult.isConnection)
     {
@@ -86,13 +90,12 @@ void printGuessFeedback(const GUESS_RESULT guessResult, bool isAlreadyGuessed)
 {
     if (isAlreadyGuessed)
     {
-        printf("\033[32mCorrect Guess!\n");
-        printf("Connection already guessed: %s\033[0m\n", guessResult.matchedConnection->c.name);
+        printf("\033[33mConnection already guessed: %s\033[0m\n", guessResult.matchedConnection->c.name);
     }
     else
     {
-        printf("Correct Guess!\n");
-        printf("Connection made: %s\n", guessResult.matchedConnection->c.name);
+        printf("\033[32mCorrect Guess!\n");
+        printf("Connection made: %s\033[0m\n", guessResult.matchedConnection->c.name);
     }
 }
 
@@ -102,7 +105,6 @@ void handleIncorrectGuess(GAME_STATE* gameState)
     gameState->lives--;
 }
 
-
 void printGameState(const GAME_STATE* gameState)
 {
     printf("\nPlayer: %s\n", gameState->player.name);
@@ -110,51 +112,6 @@ void printGameState(const GAME_STATE* gameState)
     printf("Lives: %d\n\n", gameState->lives);
     traverse(gameState->head);
 }
-
-
-//void printGameState(const GAME_STATE* gameState) {
-//    printf("\nPlayer: %s\n", gameState->player.name);
-//    printf("Score: %d\n", gameState->player.score);
-//    printf("Lives: %d\n\n", gameState->lives);
-//
-//    // Create an array to store the words
-//    char* words[4 * 4];
-//    int count = 0;
-//
-//    NODE* ptr = gameState->head;
-//    while (ptr != NULL && count < 4 * 4) {
-//        words[count] = ptr->c.words[count % MAXCONNECTIONS];
-//        count++;
-//        if (count % 4 == 0) {
-//            ptr = ptr->next; // Move to the next node after filling a row
-//        }
-//    }
-//
-//    // Shuffle the words
-//    shuffleArray(words, 4 * 4);
-//
-//    // Print the grid
-//    printf("+------------------+------------------+------------------+------------------+\n");
-//    for (int i = 0; i < 4 * 4; i++) {
-//        printf("| %-16s ", words[i] ? words[i] : ""); // Print word or empty space
-//        if ((i + 1) % 4 == 0) {
-//            printf("|\n");
-//            printf("+------------------+------------------+------------------+------------------+\n");
-//        }
-//    }
-//}
-
-void shuffleArray(char* array[], int size) {
-    for (int i = size - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        char* temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
-
-
-
 
 
 int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess)
@@ -216,9 +173,6 @@ GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
         {
             result.isConnection = true;
             result.matchedConnection = currentNode;
-            if (!currentNode->c.wasGuessed) {
-                currentNode->c.wasGuessed = true; // Mark the connection as guessed only if it hasn't been guessed before
-            }
             return result; // Return early since a valid connection was found
         }
 

@@ -58,3 +58,4 @@ void printGuessFeedback(const GUESS_RESULT guessResult, bool isAlreadyGuessed);
 void capitalizeString(char* str);
 
 
+void shuffleArray(char* array[], int size);
