@@ -47,7 +47,7 @@ void printHighscores(HIGHSCORE s) {
 
 // Saving  the high scores to a file
 void saveHighscores(HIGHSCORE s, const char filename) {
-    FILE* file = fopen(filename, "wb");
+    FILE* file = fopen(filename, "w");
     if (file == NULL) {
         printf("Error opening file for writing.\n");
         return;
@@ -58,7 +58,7 @@ void saveHighscores(HIGHSCORE s, const char filename) {
 
 // Loading high score
 void loadHighscores(HIGHSCORE* s, const char filename) {
-    FILE* file = fopen(filename, "rb");
+    FILE* file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file for reading.\n");
         return;

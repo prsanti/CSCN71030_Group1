@@ -22,7 +22,6 @@ void initializeConnections(NODE* head)
     }
 }
 
-
 void startGame(GAME_STATE* gameState)
 {
     while (gameState->lives > 0) 
@@ -219,10 +218,3 @@ void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int spli
         splitGuess[i] = NULL;
     }
 }
-
-
-
-// writing this so i dont forget later
-// iterate through the linked list
-// check the bool flag of each connection,
-// if all are made, make a new game

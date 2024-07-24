@@ -37,6 +37,9 @@ int main(void) {
 
 	//initialize game state
 	GAME_STATE gameState;
+
+	HIGHSCORE highScores;
+
 	initializeGame(&gameState, head);
 	startGame(&gameState);
 
