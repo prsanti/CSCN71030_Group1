@@ -32,40 +32,29 @@ typedef struct guess_result {
 } GUESS_RESULT;
 
 
+// Initialization Functions
 void initializeGame(GAME_STATE* gameState, NODE* head);
+void initializeConnections(NODE* head);
 
+// Game Loop Management
 void startGame(GAME_STATE* gameState);
+void processGuess(GAME_STATE* gameState);
 
-void printGameState(const GAME_STATE* gameState);
-
-
-int validateGuess(GAME_STATE* gameState, const char* guess);
-int splitGuessIntoWords(char* guess, char* words[], int max_words_per_guess);
-
-
-
-GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
-
-
-
-
-void shuffleArray(char* array[], int size);
-
-
-// helper functions
+// Input Handling
 void getUserInputGuess(char* guess, int size);
+int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess);
 void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int splitGuessSize);
 
-// Function to capitalize a string
+// Game Logic
+GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[]);
+void handleCorrectGuess(GAME_STATE* gameState, GUESS_RESULT guessResult);
+void handleIncorrectGuess(GAME_STATE* gameState);
+
+// Display and Feedback
+void printGameState(const GAME_STATE* gameState);
+void printGuessFeedback(const GUESS_RESULT guessResult, bool isAlreadyGuessed);
+
+// Utility Functions
 void capitalizeString(char* str);
-
-
-
-
-
-// help with testing functions;
-
-// These functions are just for helping me test
-void printWordsAfterSplit(char* splitGuess[], int word_count);
 
 

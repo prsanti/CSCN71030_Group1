@@ -10,93 +10,98 @@ void initializeGame(GAME_STATE* gameState, NODE* head)
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
 
+    initializeConnections(head);
+}
+
+void initializeConnections(NODE* head)
+{
     NODE* currentNode = head;
     while (currentNode != NULL) {
-        currentNode->c.wasGuessed = false; // Ensure wasGuessed is set to false initially
+        currentNode->c.wasGuessed = false;
         currentNode = currentNode->next;
     }
 }
 
 
-
 void startGame(GAME_STATE* gameState)
 {
-    // where result is stored
-    // main game loop - 4 lives
     while (gameState->lives > 0)
     {
-
-
-        char guess[MAXBUFFER] = { 0 };                  // user input buffer
-        char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };  // array where words will be stored
-        int numWordsInGuess = 0;                        // number of words in the guess
-
-
-        GUESS_RESULT guessResult;
-
-
-        // print player info
         printGameState(gameState);
-
-
-        // Loop for making sure at least 4 words are entered
-        do {
-            // reset the guess buffer and splitGuess array for each new attempt
-            resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
-
-            // ask user for input
-            getUserInputGuess(guess, MAXBUFFER);
-
-            // capitalize the string;
-            capitalizeString(guess);
-
-            // parse the guess into separate words
-            numWordsInGuess = splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
-
-            if (numWordsInGuess < 4) {
-                printf("Error: Please enter exactly 4 words. Example: red blue green yellow\n");
-            }
-
-        } while (numWordsInGuess < 4); // Repeat until exactly 4 words are entered
-
-        // check guess in connection
-        guessResult = isGuessAConnection(gameState, splitGuess);
-
-        //check if guess was already guessed
-        //if (guessResult.matchedConnection->c.wasGuessed == true)
-        //{
-        //    printf("Connection already Guessed\n");
-        //}
-        //check if guess was correct
-        if (guessResult.isConnection)
-        {
-            if (guessResult.matchedConnection->c.wasGuessed)
-            {
-                // Print in green if already guessed
-                printf("\033[32mCorrect Guess!\n");
-                printf("Connection already guessed: %s\033[0m\n", guessResult.matchedConnection->c.name);
-            }
-            else
-            {
-                // Normal color if not guessed before
-                printf("Correct Guess!\n");
-                printf("Connection made: %s\n", guessResult.matchedConnection->c.name);
-                guessResult.matchedConnection->c.wasGuessed = true; // Mark as guessed
-            }
-        }
-        else
-        {
-            printf("\033[31mIncorrect Guess!\n\033[0m");
-            gameState->lives--; // Decrement lives for incorrect guess
-        }
-
-        if (gameState->lives <= 0) 
+        processGuess(gameState);
+        if (gameState->lives <= 0)
         {
             printf("No lives left, Game Over!\n");
-            break;
         }
     }
 }
+
+void processGuess(GAME_STATE* gameState)
+{
+    char guess[MAXBUFFER] = { 0 };
+    char* splitGuess[MAX_WORDS_PER_GUESS] = { 0 };
+    int numWordsInGuess = 0;
+    GUESS_RESULT guessResult;
+
+
+    do {
+        resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
+        getUserInputGuess(guess, MAXBUFFER);
+        capitalizeString(guess);
+        numWordsInGuess = splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
+
+        if (numWordsInGuess < MAX_WORDS_PER_GUESS) {
+            printf("Error: Please enter exactly 4 words. Example: red blue green yellow\n");
+        }
+    } while (numWordsInGuess < MAX_WORDS_PER_GUESS);
+
+    guessResult = isGuessAConnection(gameState, splitGuess);
+
+    if (guessResult.isConnection)
+    {
+        handleCorrectGuess(gameState, guessResult);
+    }
+    else
+    {
+        handleIncorrectGuess(gameState);
+    }
+}
+
+void handleCorrectGuess(GAME_STATE* gameState, GUESS_RESULT guessResult)
+{
+    // if connection was already guessed
+    if (guessResult.matchedConnection->c.wasGuessed)
+    {
+        printGuessFeedback(guessResult, true);
+    }
+    else // first time being guessed
+    {
+        printGuessFeedback(guessResult, false);
+        guessResult.matchedConnection->c.wasGuessed = true;
+        gameState->player.score += 10; // Example score increment
+    }
+}
+
+void printGuessFeedback(const GUESS_RESULT guessResult, bool isAlreadyGuessed)
+{
+    if (isAlreadyGuessed)
+    {
+        printf("\033[32mCorrect Guess!\n");
+        printf("Connection already guessed: %s\033[0m\n", guessResult.matchedConnection->c.name);
+    }
+    else
+    {
+        printf("Correct Guess!\n");
+        printf("Connection made: %s\n", guessResult.matchedConnection->c.name);
+    }
+}
+
+void handleIncorrectGuess(GAME_STATE* gameState)
+{
+    printf("\033[31mIncorrect Guess!\n\033[0m");
+    gameState->lives--;
+}
+
 
 void printGameState(const GAME_STATE* gameState)
 {
@@ -149,36 +154,6 @@ void shuffleArray(char* array[], int size) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int validateGuess(GAME_STATE* gameState, const char* guess)
-{
-
-}
 
 
 
