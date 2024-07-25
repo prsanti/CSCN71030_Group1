@@ -9,6 +9,7 @@ void printConnection(CONNECTION c) {
 	for (int i = 0; i < MAXCONNECTIONS; i++) {
 		fprintf(stdout, "Connecetion %d: %s\n", i, c.words[i]);
 	}
+	fprintf(stdout, "Is Guessed: %d\n", c.wasGuessed);
 }
 
 // create a connection with a category name and array of 4 words

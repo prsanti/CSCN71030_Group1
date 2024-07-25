@@ -10,4 +10,5 @@
 #include "Highscore.h"
 #include "menu.h"
 
+// function definition
 void runTests(void);

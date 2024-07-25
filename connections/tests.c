@@ -3,9 +3,11 @@
 
 #include "tests.h"
 
+// run all tests from all modules
 void runTests(void) {
 	countLinesTest();
 	getRandomLineTest();
 	loadDataTest();
 	createConnectionTest();
+	createListTest();
 }
