@@ -37,8 +37,11 @@ int main(void) {
 
 	//initialize game state
 	GAME_STATE gameState;
-	initializeGame(&gameState, head);
-	startGame(&gameState);
+
+	HIGHSCORE highScores;
+
+	initializeGame(&gameState, head, &highScores);
+	startGame(&gameState, &highScores);
 
 	// delete and free nodes from linked list
 	deleteNode(head);
