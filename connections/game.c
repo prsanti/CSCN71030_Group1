@@ -32,6 +32,13 @@ void startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
         {
             printf("No lives left, Game Over!\n");
             endGame(gameState, highscore); // End the game and handle high scores
+            return; // Exit the loop and function
+        }
+        if (areAllConnectionsGuessed(gameState->head)) // Check if all connections are guessed
+        {
+            printf("Congratulations! You've guessed all connections correctly!\n");
+            endGame(gameState, highscore); // End the game and handle high scores
+            return; // Exit the loop and function
         }
     }
 }
@@ -230,4 +237,15 @@ void endGame(GAME_STATE* gameState, HIGHSCORE* highscore) {
     updateHighscores(highscore, gameState); // Update high scores
     printHighscores(*highscore);            // Display high scores
     saveHighscores(*highscore, "highscores.txt"); // Save high scores
+}
+
+bool areAllConnectionsGuessed(NODE* head) {
+    NODE* currentNode = head;
+    while (currentNode != NULL) {
+        if (!currentNode->c.wasGuessed) {
+            return false; // Found a connection that is not guessed yet
+        }
+        currentNode = currentNode->next;
+    }
+    return true; // All connections are guessed
 }

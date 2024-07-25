@@ -63,3 +63,5 @@ void shuffleArray(char* array[], int size);
 
 void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState);
 void endGame(GAME_STATE* gameState, HIGHSCORE* highscore);
+
+bool areAllConnectionsGuessed(NODE* head);
