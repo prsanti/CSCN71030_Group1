@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "menu.h"
+
 int displayMenu() {
     int choice;
     printf("Welcome to Connections\n");

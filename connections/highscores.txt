@@ -1,0 +1,2 @@
+samplePlayer 20
+karl 40

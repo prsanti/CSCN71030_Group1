@@ -14,66 +14,65 @@
 #define FILE "connectionsData.txt"
 
 int main(void) {
-	// randomize by time
-	srand(time(NULL));
+    // Randomize by time
+    srand(time(NULL));
 
-	// create pointer array of connections
-	CONNECTION* connectionArr[TOTALCONNECTIONS];
+    // Create pointer array of connections
+    CONNECTION* connectionArr[TOTALCONNECTIONS];
 
-	// read file data and load data into linked list
-	if (loadData(FILE, &connectionArr) == false) {
-		// close program with error
-		exit(EXIT_FAILURE);
-	}
+    // Read file data and load data into connection array
+    if (!loadData(FILE, connectionArr)) {
+        // Close program with error
+        exit(EXIT_FAILURE);
+    }
 
-	// initialize head of linked list
-	NODE* head = NULL;
+    NODE* head = NULL;
+    GAME_STATE gameState;
+    HIGHSCORE highScores;
+    int choice;
 
-	//initialize game state
-	GAME_STATE gameState;
+    do {
+        choice = displayMenu();
+        switch (choice) {
+        case 1:
+            // Allocate memory for the head node
+            head = (NODE*)malloc(sizeof(NODE));
+            if (head == NULL) {
+                fprintf(stderr, "Error allocating memory for head node\n");
+                exit(EXIT_FAILURE);
+            }
 
-	int choice;
+            // Create linked list
+            createList(head, connectionArr);
 
-	do {
-		choice = displayMenu();
-		switch (choice) {
-		case 1:
-			head = (NODE*)malloc(sizeof(NODE));		//allocate mem for head
-			if (head == NULL) {
-				fprintf(stderr, "Error allocating memory for head node\n");
-				exit(EXIT_FAILURE);
-			}
+            // Initialize and start the game
+            initializeGame(&gameState, head, &highScores);
+            startGame(&gameState, &highScores);
 
-			// create linked list
-			createList(head, connectionArr);
+            // Free the linked list after the game ends
+            deleteNode(head);
+            free(head);
+            head = NULL; // Set head to NULL after freeing
+            break;
 
-			// initialize and start the game
-			initializeGame(&gameState, head);
-			startGame(&gameState);
+        case 2:
+            // Print highscores (implement this function as needed)
+            // printHighscores(highscore);
+            break;
 
-			// free the linked list after the game ends
-			deleteNode(head);
-			free(head);
-			head = NULL; // set head to NULL after freeing
-			break;
-		case 2:
-			// Print highscores (implement this function as needed
-			break;
+        case 3:
+            printf("Exiting game. See you soon!!!\n");
+            break;
 
-		case 3:
-			printf("Exiting game. See you soon!!!\n");
-			break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+            break;
+        }
+    } while (choice != 3);
 
-		default:
-			printf("Invalid choice. Please try again.\n");
-			break;
-		}
-	} while (choice != 3);
-
-	// Free memory allocated for connections
-	for (int i = 0; i < TOTALCONNECTIONS; i++) {
-		free(connectionArr[i]);
-	}
-
-	return 0;
+    // Free memory allocated for connections
+    for (int i = 0; i < TOTALCONNECTIONS; i++) {
+        free(connectionArr[i]);
+    }
+    return 0;
 }
