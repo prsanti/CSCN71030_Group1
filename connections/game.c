@@ -4,10 +4,10 @@
 #define GRID_WIDTH 4
 #define GRID_HEIGHT 4
 
-void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
+void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore, const char* username)
 {
     gameState->head = head; // set the connections
-    strcpy(gameState->player.name, "freak");	// set the name
+    strcpy(gameState->player.name, username);	// set the name
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
 

@@ -33,7 +33,7 @@ typedef struct guess_result {
 
 
 // Initialization Functions
-void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore);
+void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore, const char* username);
 void initializeConnections(NODE* head);
 
 // Game Loop Management

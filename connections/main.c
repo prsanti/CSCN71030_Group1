@@ -13,7 +13,16 @@
 
 #define FILE "connectionsData.txt"
 
-int main(void) {
+int main(int argc, char* argv[]) {
+    // Check if the username is provided
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <username>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    // Get the username from command line argument
+    char* username = argv[1];
+
     // Randomize by time
     srand(time(NULL));
 
@@ -46,7 +55,7 @@ int main(void) {
             createList(head, connectionArr);
 
             // Initialize and start the game
-            initializeGame(&gameState, head, &highScores);
+            initializeGame(&gameState, head, &highScores, username);
             startGame(&gameState, &highScores);
 
             // Free the linked list after the game ends
