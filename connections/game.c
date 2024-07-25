@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game.h"
+#define GRID_WIDTH 4
+#define GRID_HEIGHT 4
 
 void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
 {
@@ -117,9 +119,44 @@ void printGameState(const GAME_STATE* gameState)
     printf("\nPlayer: %s\n", gameState->player.name);
     printf("Score: %d\n", gameState->player.score);
     printf("Lives: %d\n\n", gameState->lives);
-    traverse(gameState->head);
+    //traverse(gameState->head);
+
+    // Create an array to store the words
+    char* words[GRID_WIDTH * GRID_HEIGHT];
+    int count = 0;
+
+    NODE* ptr = gameState->head;
+    while (ptr != NULL && count < GRID_WIDTH * GRID_HEIGHT) {
+        words[count] = ptr->c.words[count % MAXCONNECTIONS];
+        count++;
+        if (count % GRID_WIDTH == 0) {
+            ptr = ptr->next; // Move to the next node after filling a row
+        }
+    }
+
+    // Shuffle the words
+    shuffleArray(words, GRID_WIDTH * GRID_HEIGHT);
+
+    // Print the grid
+    printf("+------------------+------------------+------------------+------------------+\n");
+    for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
+        printf("| %-16s ", words[i] ? words[i] : ""); // Print word or empty space
+        if ((i + 1) % GRID_WIDTH == 0) {
+            printf("|\n");
+            printf("+------------------+------------------+------------------+------------------+\n");
+        }
+    }
 }
 
+
+void shuffleArray(char* array[], int size) {
+    for (int i = size - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        char* temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
 
 int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess)
 {
