@@ -8,7 +8,7 @@
 #include "connection.h"
 #include "list.h"
 #include "file.h"
-
+#include "menu.h"
 #include "game.h"
 
 #define FILE "connectionsData.txt"
