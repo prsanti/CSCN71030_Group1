@@ -2,15 +2,15 @@
 
 #include "game.h"
 
-
-void initializeGame(GAME_STATE* gameState, NODE* head)
+void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
 {
     gameState->head = head; // set the connections
-    strcpy(gameState->player.name, "samplePlayer");	// set the name
+    strcpy(gameState->player.name, "karl");	// set the name
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
 
     initializeConnections(head); // set the connections flag to false
+    loadHighscores(highscore, "highscores.txt"); // Load existing high scores
 }
 
 void initializeConnections(NODE* head)
@@ -22,7 +22,7 @@ void initializeConnections(NODE* head)
     }
 }
 
-void startGame(GAME_STATE* gameState)
+void startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 {
     while (gameState->lives > 0) 
     {
@@ -31,6 +31,7 @@ void startGame(GAME_STATE* gameState)
         if (gameState->lives <= 0) // after 4 lives are finished game is done
         {
             printf("No lives left, Game Over!\n");
+            endGame(gameState, highscore); // End the game and handle high scores
         }
     }
 }
@@ -217,4 +218,16 @@ void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int spli
     {
         splitGuess[i] = NULL;
     }
+}
+
+// Updates high scores with the player's score if it's high enough
+void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState) {
+    addScore(highscore, gameState->player.name, gameState->player.score);
+}
+
+// Handles the end of the game, updating and saving high scores
+void endGame(GAME_STATE* gameState, HIGHSCORE* highscore) {
+    updateHighscores(highscore, gameState); // Update high scores
+    printHighscores(*highscore);            // Display high scores
+    saveHighscores(*highscore, "highscores.txt"); // Save high scores
 }

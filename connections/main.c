@@ -40,8 +40,8 @@ int main(void) {
 
 	HIGHSCORE highScores;
 
-	initializeGame(&gameState, head);
-	startGame(&gameState);
+	initializeGame(&gameState, head, &highScores);
+	startGame(&gameState, &highScores);
 
 	// delete and free nodes from linked list
 	deleteNode(head);

@@ -33,11 +33,11 @@ typedef struct guess_result {
 
 
 // Initialization Functions
-void initializeGame(GAME_STATE* gameState, NODE* head);
+void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore);
 void initializeConnections(NODE* head);
 
 // Game Loop Management
-void startGame(GAME_STATE* gameState);
+void startGame(GAME_STATE* gameState, HIGHSCORE* highscore);
 void processGuess(GAME_STATE* gameState);
 
 // Input Handling
@@ -59,3 +59,7 @@ void capitalizeString(char* str);
 
 
 void shuffleArray(char* array[], int size);
+
+
+void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState);
+void endGame(GAME_STATE* gameState, HIGHSCORE* highscore);
