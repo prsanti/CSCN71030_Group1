@@ -14,38 +14,6 @@
 #define FILE "connectionsData.txt"
 
 int main(void) {
-	/*// randomize by time
-	srand(time(NULL));
-
-	// initialize head of linked list
-	NODE* head = (NODE*)malloc(sizeof(NODE));
-
-	// create pointer array of connections
-	CONNECTION *connectionArr[TOTALCONNECTIONS];
-
-	// read file data and load data into linked list
-	if (loadData(FILE, &connectionArr) == false) {
-		// close program with error
-		exit(EXIT_FAILURE);
-	}
-
-	// create linked list
-	createList(head, connectionArr);
-
-	// traverse linked list
-	//traverse(head);
-
-	//initialize game state
-	GAME_STATE gameState;
-
-	HIGHSCORE highScores;
-
-	initializeGame(&gameState, head, &highScores);
-	startGame(&gameState, &highScores);
-
-	// delete and free nodes from linked list
-	deleteNode(head);
-	*/
     // Randomize by time
     srand(time(NULL));
 
@@ -106,6 +74,5 @@ int main(void) {
     for (int i = 0; i < TOTALCONNECTIONS; i++) {
         free(connectionArr[i]);
     }
-
     return 0;
 }

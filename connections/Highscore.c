@@ -21,20 +21,7 @@ void addScore(HIGHSCORE* s, char* playerName, int score) {
         s->scores[s->numscores].score = score;
         s->numscores++;
     }
-    else {
-        // If the list is full, it replaces the lowest score if the new score is higher
-       
-        int lowestScoreIndex = 0;
-        for (int i = 1; i < MAX_SCORES; i++) {
-            if (s->scores[i].score < s->scores[lowestScoreIndex].score) {
-                lowestScoreIndex = i;
-            }
-        }
-        if (score > s->scores[lowestScoreIndex].score) {
-            strcpy(s->scores[lowestScoreIndex].name, playerName);
-            s->scores[lowestScoreIndex].score = score;
-        }
-    }
+  
 }
 
 // Prints the high scores list
