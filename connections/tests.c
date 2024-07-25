@@ -4,5 +4,7 @@
 #include "tests.h"
 
 void runTests(void) {
-
+	countLinesTest();
+	getRandomLineTest();
+	loadDataTest();
 }

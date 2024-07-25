@@ -10,6 +10,7 @@
 #include "file.h"
 #include "menu.h"
 #include "game.h"
+#include "tests.h"
 
 #define FILE "connectionsData.txt"
 
@@ -72,7 +73,9 @@ int main(int argc, char* argv[]) {
         case 3:
             printf("Exiting game. See you soon!!!\n");
             break;
-
+        case 4:
+            runTests();
+            break;
         default:
             printf("Invalid choice. Please try again.\n");
             break;
