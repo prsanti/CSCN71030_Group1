@@ -23,3 +23,10 @@ void getRandomLine(FILE* fp, char** buffer);
 // load data from connectionData.txt
 // set data to connectionArr to be used for creating linked list
 bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]);
+
+// manual test functions for file module
+bool countLinesTest(void);
+
+bool getRandomLineTest(void);
+
+bool loadDataTest(void);
