@@ -7,4 +7,5 @@ void runTests(void) {
 	countLinesTest();
 	getRandomLineTest();
 	loadDataTest();
+	createConnectionTest();
 }

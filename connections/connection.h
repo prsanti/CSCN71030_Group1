@@ -29,3 +29,6 @@ CONNECTION createConnection(char name[MAXWORD], char wordList[MAXCONNECTIONS][MA
 
 // copy a connection from a source
 CONNECTION copyConnection(CONNECTION src);
+
+// manual test function for connection module
+bool createConnectionTest(void);
