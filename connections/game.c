@@ -9,6 +9,7 @@ void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
     strcpy(gameState->player.name, "freak");	// set the name
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
+    gameState->isGameOver = false;
 
     initializeConnections(head); // set the connections flag to false
     loadHighscores(highscore, "highscores.txt"); // Load existing high scores
@@ -28,20 +29,26 @@ void initializeConnections(NODE* head)
 
 void startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 {
-    while (gameState->lives > 0) 
+    while (!gameState->isGameOver) 
     {
         printGameState(gameState); // print the game
         processGuess(gameState);   // get a guess and process it
+
+        if (gameState->isGameOver) // Check if the game is over due to "EXIT" command
+        {
+            printf("Exiting the game...\n");
+            return; // Exit the loop and function
+        }
         if (gameState->lives <= 0) // after 4 lives are finished game is done
         {
             printf("No lives left, Game Over!\n");
-            endGame(gameState, highscore); // End the game and handle high scores
+            endGameHighScore(gameState, highscore); // End the game and handle high scores
             return; // Exit the loop and function
         }
         if (areAllConnectionsGuessed(gameState->head)) // Check if all connections are guessed
         {
             printf("Congratulations! You've guessed all connections correctly!\n");
-            endGame(gameState, highscore); // End the game and handle high scores
+            endGameHighScore(gameState, highscore); // End the game and handle high scores
             return; // Exit the loop and function
         }
     }
@@ -60,7 +67,11 @@ void processGuess(GAME_STATE* gameState)
     // at the same time it puts each word into a string and capitalizes everything
     do {
         resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
-        getUserInputGuess(guess, MAXBUFFER);
+        if (getUserInputGuess(guess, MAXBUFFER)) {
+            // Exit command received
+            gameState->isGameOver = true; // Set the flag to true
+            return; // Exit the function
+        }
         capitalizeString(guess);
         numWordsInGuess = splitGuessIntoWords(guess, splitGuess, MAX_WORDS_PER_GUESS);
 
@@ -195,12 +206,18 @@ int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess
     return word_count;
 }
 
-void getUserInputGuess(char* guess, int size)
+bool getUserInputGuess(char* guess, int size)
 {
     // prompt the user for a guess - example "red blue green yellow"
     printf("Enter your guess (words separated by spaces): ");
     fgets(guess, size, stdin);
     guess[strcspn(guess, "\n")] = '\0'; // remove newline character
+
+    // Check if the user entered the exit command
+    if (strcmp(guess, "EXIT") == 0) {
+        return true; // Return true to indicate an exit command
+    }
+    return false; // No exit command
 }
 
 
@@ -289,7 +306,7 @@ void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState) {
 }
 
 // Handles the end of the game, updating and saving high scores
-void endGame(GAME_STATE* gameState, HIGHSCORE* highscore) {
+void endGameHighScore(GAME_STATE* gameState, HIGHSCORE* highscore) {
     updateHighscores(highscore, gameState); // Update high scores
     printHighscores(*highscore);            // Display high scores
     saveHighscores(*highscore, "highscores.txt"); // Save high scores
