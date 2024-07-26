@@ -13,6 +13,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define MAXLINES 4
+
 // function to count the number of lines in a file
 // allows us to add more connections without having a static count
 int countLines(FILE* fp);
