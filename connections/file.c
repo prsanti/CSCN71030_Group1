@@ -11,7 +11,7 @@
 int countLines(FILE* fp) {
 	// potential debug
 	// set lines to 1 and adjust file to start at 1
-	int lines = 0;
+	int lines = 1;
 	char ch;
 
 	// loop until end of file
@@ -34,11 +34,10 @@ int countLines(FILE* fp) {
 void getRandomLine(FILE* fp, char** buffer) {
 	// get total lines from file
 	int lines = countLines(fp);
-	int currentLine = 0;
+	int currentLine = 1;
 
-	// generate random line
-	//Unhandled exception at 0x00007FF7F8331D31 in connections.exe: 0xC0000094 : Integer division by zero. (see line 11)
-	int randomLine = rand() % lines;
+	// generate random line and set min line to 1
+	int randomLine = 1 + (rand() % lines);
 
 	char ch = { '\0' };
 
@@ -82,8 +81,17 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 	char name[MAXWORD];
 	char words[MAXCONNECTIONS][MAXWORD];
 
+	// random lines used:
+	int linesUsed[MAXLINES] = { 0,0,0,0 };
+
 	for (int i = 0; i < TOTALCONNECTIONS; i++) {
 		// read random line of text and set it to buffer
+		//for (int k = 0; k < MAXLINES; k++) {
+		//	if (linesUsed[i]) {
+		//		linesUsed[i] = getRandomLine(fp, buffer);
+		//	}
+		//}
+		
 		getRandomLine(fp, buffer);
 		// set last char of buffer to null char
 		buffer[strlen(buffer) - 1] = '\0';
@@ -138,8 +146,7 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 bool countLinesTest(void) {
 	printf("REQ_IO_001\n");
 	printf("Count total lines from text file data shall be tested. \n");
-	// lines start at 0
-	int expected = 43;
+	int expected = 44;
 
 	FILE* fp = fopen(FILENAME, "r");
 	if (fp == NULL) {
