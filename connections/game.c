@@ -37,6 +37,7 @@ void startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
         if (gameState->isGameOver) // Check if the game is over due to "EXIT" command
         {
             printf("Exiting the game...\n");
+            endGameHighScore(gameState, highscore); // End the game and handle high scores
             return; // Exit the loop and function
         }
         if (gameState->lives <= 0) // after 4 lives are finished game is done
@@ -104,7 +105,6 @@ void handleCorrectGuess(GAME_STATE* gameState, GUESS_RESULT guessResult)
     {
         printGuessFeedback(guessResult, false);
         guessResult.matchedConnection->c.wasGuessed = true;
-        gameState->player.score += 10; // Example score increment
     }
 }
 
@@ -127,43 +127,10 @@ void handleIncorrectGuess(GAME_STATE* gameState)
     gameState->lives--;
 }
 
-//void printGameState(const GAME_STATE* gameState)
-//{
-//    printf("\nPlayer: %s\n", gameState->player.name);
-//    printf("Score: %d\n", gameState->player.score);
-//    printf("Lives: %d\n\n", gameState->lives);
-//    traverse(gameState->head);
-//
-//    // Create an array to store the words
-//    char* words[GRID_WIDTH * GRID_HEIGHT];
-//    int count = 0;
-//
-//    NODE* ptr = gameState->head;
-//    while (ptr != NULL && count < GRID_WIDTH * GRID_HEIGHT) {
-//        words[count] = ptr->c.words[count % MAXCONNECTIONS];
-//        count++;
-//        if (count % GRID_WIDTH == 0) {
-//            ptr = ptr->next; // Move to the next node after filling a row
-//        }
-//    }
-//
-//    // Shuffle the words
-//    shuffleArray(words, GRID_WIDTH * GRID_HEIGHT);
-//
-//    // Print the grid
-//    printf("+------------------+------------------+------------------+------------------+\n");
-//    for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
-//        printf("| %-16s ", words[i] ? words[i] : ""); // Print word or empty space
-//        if ((i + 1) % GRID_WIDTH == 0) {
-//            printf("|\n");
-//            printf("+------------------+------------------+------------------+------------------+\n");
-//        }
-//    }
-//}
 
 void printGameState(const GAME_STATE* gameState) {
     printf("\nPlayer: %s\n", gameState->player.name);
-    printf("Score: %d\n", gameState->player.score);
+    printf("Streak: %d\n", gameState->player.score);
     printf("Lives: %d\n\n", gameState->lives);
     traverse(gameState->head);
 
@@ -307,7 +274,15 @@ void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState) {
 
 // Handles the end of the game, updating and saving high scores
 void endGameHighScore(GAME_STATE* gameState, HIGHSCORE* highscore) {
-    updateHighscores(highscore, gameState); // Update high scores
+    if (areAllConnectionsGuessed(gameState->head)) {
+        gameState->player.score++; // Increment score by 1 for each win
+        printf("Current streak: %d\n", gameState->player.score);
+    }
+    else if (gameState->lives <= 0 || gameState->isGameOver) {
+        gameState->player.score = 0; // Reset streak on game over
+        printf("Streak reset.\n");
+    }
+    updateHighscores(highscore, gameState); // Update high scores with streak
     printHighscores(*highscore);            // Display high scores
     saveHighscores(*highscore, "highscores.txt"); // Save high scores
 }
