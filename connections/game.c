@@ -1,8 +1,7 @@
 #pragma once
 
 #include "game.h"
-#define GRID_WIDTH 4
-#define GRID_HEIGHT 4
+
 
 void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
 {
@@ -13,6 +12,9 @@ void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
 
     initializeConnections(head); // set the connections flag to false
     loadHighscores(highscore, "highscores.txt"); // Load existing high scores
+
+    // Shuffle words once here for display
+    storeShuffledWords(gameState);
 }
 
 void initializeConnections(NODE* head)
@@ -114,33 +116,50 @@ void handleIncorrectGuess(GAME_STATE* gameState)
     gameState->lives--;
 }
 
-void printGameState(const GAME_STATE* gameState)
-{
+//void printGameState(const GAME_STATE* gameState)
+//{
+//    printf("\nPlayer: %s\n", gameState->player.name);
+//    printf("Score: %d\n", gameState->player.score);
+//    printf("Lives: %d\n\n", gameState->lives);
+//    traverse(gameState->head);
+//
+//    // Create an array to store the words
+//    char* words[GRID_WIDTH * GRID_HEIGHT];
+//    int count = 0;
+//
+//    NODE* ptr = gameState->head;
+//    while (ptr != NULL && count < GRID_WIDTH * GRID_HEIGHT) {
+//        words[count] = ptr->c.words[count % MAXCONNECTIONS];
+//        count++;
+//        if (count % GRID_WIDTH == 0) {
+//            ptr = ptr->next; // Move to the next node after filling a row
+//        }
+//    }
+//
+//    // Shuffle the words
+//    shuffleArray(words, GRID_WIDTH * GRID_HEIGHT);
+//
+//    // Print the grid
+//    printf("+------------------+------------------+------------------+------------------+\n");
+//    for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
+//        printf("| %-16s ", words[i] ? words[i] : ""); // Print word or empty space
+//        if ((i + 1) % GRID_WIDTH == 0) {
+//            printf("|\n");
+//            printf("+------------------+------------------+------------------+------------------+\n");
+//        }
+//    }
+//}
+
+void printGameState(const GAME_STATE* gameState) {
     printf("\nPlayer: %s\n", gameState->player.name);
     printf("Score: %d\n", gameState->player.score);
     printf("Lives: %d\n\n", gameState->lives);
     traverse(gameState->head);
 
-    // Create an array to store the words
-    char* words[GRID_WIDTH * GRID_HEIGHT];
-    int count = 0;
-
-    NODE* ptr = gameState->head;
-    while (ptr != NULL && count < GRID_WIDTH * GRID_HEIGHT) {
-        words[count] = ptr->c.words[count % MAXCONNECTIONS];
-        count++;
-        if (count % GRID_WIDTH == 0) {
-            ptr = ptr->next; // Move to the next node after filling a row
-        }
-    }
-
-    // Shuffle the words
-    shuffleArray(words, GRID_WIDTH * GRID_HEIGHT);
-
-    // Print the grid
+    // Print the grid using the stored shuffled order
     printf("+------------------+------------------+------------------+------------------+\n");
     for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
-        printf("| %-16s ", words[i] ? words[i] : ""); // Print word or empty space
+        printf("| %-16s ", gameState->shuffledWords[i] ? gameState->shuffledWords[i] : "");
         if ((i + 1) % GRID_WIDTH == 0) {
             printf("|\n");
             printf("+------------------+------------------+------------------+------------------+\n");
@@ -293,4 +312,22 @@ bool areAllConnectionsGuessed(NODE* head) {
 
     printf("Not all connections guessed yet.\n"); // Debug output
     return false; // Less than 4 connections guessed
+}
+
+
+
+
+void storeShuffledWords(GAME_STATE* gameState) {
+    NODE* ptr = gameState->head;
+    int count = 0;
+
+    while (ptr != NULL && count < GRID_WIDTH * GRID_HEIGHT) {
+        gameState->shuffledWords[count] = ptr->c.words[count % MAXCONNECTIONS];
+        count++;
+        if (count % GRID_WIDTH == 0) {
+            ptr = ptr->next; // Move to the next node after filling a row
+        }
+    }
+
+    shuffleArray(gameState->shuffledWords, GRID_WIDTH * GRID_HEIGHT);
 }

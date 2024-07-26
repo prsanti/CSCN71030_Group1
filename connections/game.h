@@ -12,6 +12,9 @@
 #define MAX_WORDS_PER_GUESS 4
 #define WORDS_IN_ONE_CONNECTION 4
 
+#define GRID_WIDTH 4
+#define GRID_HEIGHT 4
+
 #include <ctype.h>
 #include "connection.h"
 #include "list.h"
@@ -23,6 +26,7 @@ typedef struct game_state {
     NODE* head;     // connection data
     PLAYER player;  // player data
     int lives;      // lives
+    char* shuffledWords[GRID_WIDTH * GRID_HEIGHT];
 } GAME_STATE;
 
 
@@ -65,3 +69,5 @@ void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState);
 void endGame(GAME_STATE* gameState, HIGHSCORE* highscore);
 
 bool areAllConnectionsGuessed(NODE* head);
+
+void storeShuffledWords(GAME_STATE* gameState);
