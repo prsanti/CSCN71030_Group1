@@ -6,8 +6,8 @@ NODE sampleNode2 = { .c = {.words = {"apple", "banana", "cherry", "date"}, .wasG
 
 // Test case: REQ_GM_001
 void test_initializeGame() {
-    GAME_STATE gameState;       // Declare a GAME_STATE variable to store the game state
-    HIGHSCORE highscore;        // Declare a HIGHSCORE variable to store the highscore data
+    GAME_STATE gameState; 
+    HIGHSCORE highscore; 
     sampleNode1.next = &sampleNode2;  // Link sampleNode1 to sampleNode2
 
     initializeGame(&gameState, &sampleNode1, &highscore, "karl");  // Initialize the game state with the sample nodes and highscore
@@ -123,13 +123,11 @@ void test_isGuessAConnection() {
 
 // Main function to run all tests
 int runAllGameTests() {
-    test_initializeGame();       // Run test for game initialization
-    test_processCorrectGuess();  // Run test for processing correct guesses
-    test_processIncorrectGuess();  // Run test for processing incorrect guesses
-    test_splitGuessIntoWords();  // Run test for splitting guesses into words
-    test_capitalizeString();     // Run test for capitalizing strings
-    test_isGuessAConnection();   // Run test for validating guesses against connections
-
-    printf("All tests completed!\n");  // Print a message indicating all tests are complete
+    test_initializeGame();
+    test_processCorrectGuess();  
+    test_processIncorrectGuess();  
+    test_splitGuessIntoWords();  
+    test_capitalizeString();     
+    test_isGuessAConnection();
     return 0;  // Return success code
 }

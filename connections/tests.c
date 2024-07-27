@@ -5,9 +5,18 @@
 
 // run all tests from all modules
 void runTests(void) {
-	countLinesTest();
-	getRandomLineTest();
-	loadDataTest();
-	createConnectionTest();
-	createListTest();
+	printf("\nCONNECTION TESTS\n");
+	runAllConnectionTests();
+
+	printf("\nFILE TESTS\n");
+	runAllFileTests();
+
+	printf("\nGAME TESTS\n");
+	runAllGameTests();
+
+	printf("\nHIGHSCORE TESTS\n");
+	runAllHighscoreTests();
+
+	printf("\nLIST TESTS\n");
+	runAllListTests();
 }
