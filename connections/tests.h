@@ -10,5 +10,10 @@
 #include "Highscore.h"
 #include "menu.h"
 
+#include "tests_connection.h"
+#include "tests_file.h"
+#include "tests_list.h"
+#include "tests_game.h"
+
 // function definition
 void runTests(void);
