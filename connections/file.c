@@ -4,13 +4,14 @@
 #include "file.h"
 #include "connection.h"
 #include "list.h"
+#define FILENAME "connectionsData.txt"
 
 // function to count the number of lines in a file
 // allows us to add more connections without having a static count
 int countLines(FILE* fp) {
 	// potential debug
 	// set lines to 1 and adjust file to start at 1
-	int lines = 0;
+	int lines = 1;
 	char ch;
 
 	// loop until end of file
@@ -29,15 +30,11 @@ int countLines(FILE* fp) {
 	return lines;
 }
 
-// get random line from text file data
-void getRandomLine(FILE* fp, char** buffer) {
+// read line from text file data and change buffer to it
+void readRandomLine(FILE* fp, int line, char** buffer) {
 	// get total lines from file
 	int lines = countLines(fp);
-	int currentLine = 0;
-
-	// generate random line
-	//Unhandled exception at 0x00007FF7F8331D31 in connections.exe: 0xC0000094 : Integer division by zero. (see line 11)
-	int randomLine = rand() % lines;
+	int currentLine = 1;
 
 	char ch = { '\0' };
 
@@ -45,7 +42,7 @@ void getRandomLine(FILE* fp, char** buffer) {
 	fseek(fp, 0, SEEK_SET);
 
 	// loop until current line reaches random line or end of file
-	while (currentLine < randomLine && !feof(fp)) {
+	while (currentLine < line && !feof(fp)) {
 		// get char of each character of line until end of line
 		ch = fgetc(fp);
 	
@@ -60,6 +57,32 @@ void getRandomLine(FILE* fp, char** buffer) {
 	if (fgets(buffer, MAXBUFFER, fp) == NULL) {
 		buffer[0] = '\0';
 	}
+}
+
+// get and return random line from file
+int getRandomLine(FILE* fp) {
+	// get total lines from file
+	int lines = countLines(fp);
+	int currentLine = 1;
+
+	// generate random line and set min line to 1
+	int randomLine = 1 + (rand() % lines);
+
+	//printf("randline: %d\n", randomLine);
+
+	return randomLine;
+}
+
+// assign random line to array
+bool assignLines(FILE* fp, int readLines[]) {
+	while (readLines[0] != readLines[1] != readLines[2] != readLines[3]) {
+		readLines[0] = getRandomLine(fp);
+		readLines[1] = getRandomLine(fp);
+		readLines[2] = getRandomLine(fp);
+		readLines[3] = getRandomLine(fp);
+	}
+
+	return true;
 }
 
 // load data from connectionData.txt
@@ -81,9 +104,14 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 	char name[MAXWORD];
 	char words[MAXCONNECTIONS][MAXWORD];
 
+	// random lines used
+	int readLines[MAXLINES];
+
+	// assign random lines to array until they are different
+	while (assignLines(fp, readLines) != true);
+
 	for (int i = 0; i < TOTALCONNECTIONS; i++) {
-		// read random line of text and set it to buffer
-		getRandomLine(fp, buffer);
+		readRandomLine(fp, readLines[i], buffer);
 		// set last char of buffer to null char
 		buffer[strlen(buffer) - 1] = '\0';
 		//fprintf(stdout, "line: %s\n", buffer);
@@ -130,4 +158,97 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 
 	// successful read and assigning data to array
 	return true;
+}
+
+// manual tests
+// REQ_IO_001
+bool countLinesTest(void) {
+	printf("REQ_IO_001\n");
+	printf("Count total lines from text file data shall be tested. \n");
+	int expected = 44;
+
+	FILE* fp = fopen(FILENAME, "r");
+	if (fp == NULL) {
+		fprintf(stderr, "Test failed: Error opening file\n");
+		return false;
+	}
+
+	int result = countLines(fp);
+
+	if (expected == result) {
+		printf("Test passed\n");
+		return true;
+	}
+	else {
+		printf("Test failed\n");
+		return false;
+	}
+}
+
+// REQ_IO_002
+bool getRandomLineTest(void) {
+	printf("REQ_IO_002\n");
+	printf("Get random line from text file shall be tested.\n");
+
+	// a random num from 0 to 43 will be the return
+	char testBuffer[MAXBUFFER] = { '\0' };
+
+	FILE* fp = fopen(FILENAME, "r");
+
+	// print error if cannot open file
+	if (fp == NULL) {
+		fprintf(stderr, "Test failed: Error opening file\n");
+		return false;
+	}
+	
+	getRandomLine(fp, testBuffer);
+
+	// check if buffer is assigned a correct line:
+	if (testBuffer != '\0') {
+		printf("Test passed\n");
+		printf("Buffer returned: %s\n", testBuffer);
+		return true;
+	}
+	else {
+		printf("test failed\n");
+		printf("Buffer returned: %s\n", testBuffer);
+		return false;
+	}
+}
+
+// REQ_IO_003
+bool loadDataTest(void) {
+	printf("REQ_IO_003\n");
+	printf("Load data from text file and set data to an array of Connections shall be tested\n");
+
+	bool expected = true;
+
+	CONNECTION* connectionArr[TOTALCONNECTIONS];
+
+	bool result = loadData(FILENAME, connectionArr);
+
+	// manually check if connections are made in the array
+	for (int i = 0; i < MAXCONNECTIONS; i++) {
+		printConnection(*connectionArr[i]);
+		// check if name and wasGuessed marker are valid when initialized
+		if (*connectionArr[i]->name == '\0' || connectionArr[i]->wasGuessed == true) {
+			result = false;
+		}
+
+		// check each connection words if they exist and are valid
+		for (int j = 0; j < TOTALCONNECTIONS; j++) {
+			if (connectionArr[i]->words[j] == '\0') {
+				result = false;
+			}
+		}
+	}
+
+	if (expected == result) {
+		printf("Test passed\n");
+		return true;
+	}
+	else {
+		printf("Test failed\n");
+		return false;
+	}
 }

@@ -23,3 +23,6 @@ void traverse(NODE*);
 
 // traverse and free each node
 void deleteNode(NODE* ptr);
+
+// manual test function for list module
+bool createListTest(void);

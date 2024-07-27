@@ -13,13 +13,28 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define MAXLINES 4
+
 // function to count the number of lines in a file
 // allows us to add more connections without having a static count
 int countLines(FILE* fp);
 
-// get random line from text file data
-void getRandomLine(FILE* fp, char** buffer);
+// read random line from text file data
+void readRandomLine(FILE* fp, int line, char** buffer);
+
+// get random line from text file
+int getRandomLine(FILE* fp);
+
+// asign random line and ensure no duplicates
+bool assignLines(FILE* fp, int readLines[]);
 
 // load data from connectionData.txt
 // set data to connectionArr to be used for creating linked list
 bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]);
+
+// manual test functions for file module
+bool countLinesTest(void);
+
+bool getRandomLineTest(void);
+
+bool loadDataTest(void);

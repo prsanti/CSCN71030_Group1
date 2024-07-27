@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <assert.h>
 #include "menu.h"
 
 int displayMenu() {
@@ -18,6 +19,10 @@ int displayMenu() {
     }
     else {
         choice = 0; // Default value if input failed
+    while (scanf("%d", &choice) != 1) {
+        //clear the input buffer
+        while (getchar() != '\n') continue;
+        printf("Invalid input. Please enter a number between 1 and 3: ");
     }
 
     return choice;
