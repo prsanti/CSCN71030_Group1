@@ -30,14 +30,11 @@ int countLines(FILE* fp) {
 	return lines;
 }
 
-// get random line from text file data
-void getRandomLine(FILE* fp, char** buffer) {
+// read line from text file data and change buffer to it
+void readRandomLine(FILE* fp, int line, char** buffer) {
 	// get total lines from file
 	int lines = countLines(fp);
 	int currentLine = 1;
-
-	// generate random line and set min line to 1
-	int randomLine = 1 + (rand() % lines);
 
 	char ch = { '\0' };
 
@@ -45,7 +42,7 @@ void getRandomLine(FILE* fp, char** buffer) {
 	fseek(fp, 0, SEEK_SET);
 
 	// loop until current line reaches random line or end of file
-	while (currentLine < randomLine && !feof(fp)) {
+	while (currentLine < line && !feof(fp)) {
 		// get char of each character of line until end of line
 		ch = fgetc(fp);
 	
@@ -60,6 +57,32 @@ void getRandomLine(FILE* fp, char** buffer) {
 	if (fgets(buffer, MAXBUFFER, fp) == NULL) {
 		buffer[0] = '\0';
 	}
+}
+
+// get and return random line from file
+int getRandomLine(FILE* fp) {
+	// get total lines from file
+	int lines = countLines(fp);
+	int currentLine = 1;
+
+	// generate random line and set min line to 1
+	int randomLine = 1 + (rand() % lines);
+
+	//printf("randline: %d\n", randomLine);
+
+	return randomLine;
+}
+
+// assign random line to array
+bool assignLines(FILE* fp, int readLines[]) {
+	while (readLines[0] != readLines[1] != readLines[2] != readLines[3]) {
+		readLines[0] = getRandomLine(fp);
+		readLines[1] = getRandomLine(fp);
+		readLines[2] = getRandomLine(fp);
+		readLines[3] = getRandomLine(fp);
+	}
+
+	return true;
 }
 
 // load data from connectionData.txt
@@ -81,18 +104,14 @@ bool loadData(char* filename, CONNECTION* connectionArr[TOTALCONNECTIONS]) {
 	char name[MAXWORD];
 	char words[MAXCONNECTIONS][MAXWORD];
 
-	// random lines used:
-	int linesUsed[MAXLINES] = { 0,0,0,0 };
+	// random lines used
+	int readLines[MAXLINES];
+
+	// assign random lines to array until they are different
+	while (assignLines(fp, readLines) != true);
 
 	for (int i = 0; i < TOTALCONNECTIONS; i++) {
-		// read random line of text and set it to buffer
-		//for (int k = 0; k < MAXLINES; k++) {
-		//	if (linesUsed[i]) {
-		//		linesUsed[i] = getRandomLine(fp, buffer);
-		//	}
-		//}
-		
-		getRandomLine(fp, buffer);
+		readRandomLine(fp, readLines[i], buffer);
 		// set last char of buffer to null char
 		buffer[strlen(buffer) - 1] = '\0';
 		//fprintf(stdout, "line: %s\n", buffer);
