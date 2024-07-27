@@ -20,7 +20,10 @@
 #include "list.h"
 #include "Highscore.h"
 #include "file.h"
-
+#include <assert.h>      
+#include <string.h>       
+#include <stdio.h>        
+#include "game.h"   
 
 typedef struct game_state {
     NODE* head;     // connection data
