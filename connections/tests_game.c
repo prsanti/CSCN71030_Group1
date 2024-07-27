@@ -10,7 +10,7 @@ void test_initializeGame() {
     HIGHSCORE highscore; 
     sampleNode1.next = &sampleNode2;  // Link sampleNode1 to sampleNode2
 
-    initializeGame(&gameState, &sampleNode1, &highscore, "karl");  // Initialize the game state with the sample nodes and highscore
+    initializeGame(&gameState, &sampleNode1, &highscore, "samplePlayer");  // Initialize the game state with the sample nodes and highscore
 
     // Check if the game state is initialized correctly
     if (strcmp(gameState.player.name, "samplePlayer") == 0 &&
