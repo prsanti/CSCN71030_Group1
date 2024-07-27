@@ -6,7 +6,7 @@
 void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore)
 {
     gameState->head = head; // set the connections
-    strcpy(gameState->player.name, "freak");	// set the name
+    strcpy(gameState->player.name, "samplePlayer");	// set the name
     gameState->player.score = 0;	// set the score
     gameState->lives = MAX_LIVES; // set the lives
     gameState->isGameOver = false;
