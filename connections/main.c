@@ -32,11 +32,6 @@ int main(int argc, char* argv[]) {
     // Create pointer array of connections
     CONNECTION* connectionArr[TOTALCONNECTIONS];
 
-    // Read file data and load data into connection array
-    if (!loadData(FILE, connectionArr)) {
-        // Close program with error
-        exit(EXIT_FAILURE);
-    }
 
     NODE* head = NULL;
     GAME_STATE gameState;
@@ -58,6 +53,12 @@ int main(int argc, char* argv[]) {
                 exit(EXIT_FAILURE);
             }
 
+            // Read file data and load data into connection array
+            if (!loadData(FILE, connectionArr)) {
+                // Close program with error
+                exit(EXIT_FAILURE);
+            }
+
             // Create linked list
             createList(head, connectionArr);
 
@@ -67,7 +68,6 @@ int main(int argc, char* argv[]) {
 
             // Free the linked list after the game ends
             deleteNode(head);
-            free(head);
             head = NULL; // Set head to NULL after freeing
             break;
 
