@@ -68,18 +68,24 @@ int getRandomLine(FILE* fp) {
 	// generate random line and set min line to 1
 	int randomLine = 1 + (rand() % lines);
 
-	//printf("randline: %d\n", randomLine);
-
 	return randomLine;
 }
 
 // assign random line to array
 bool assignLines(FILE* fp, int readLines[]) {
-	while (readLines[0] != readLines[1] != readLines[2] != readLines[3]) {
+	// true by default
+	bool isMatching = true;
+
+	while (isMatching) {
 		readLines[0] = getRandomLine(fp);
 		readLines[1] = getRandomLine(fp);
 		readLines[2] = getRandomLine(fp);
 		readLines[3] = getRandomLine(fp);
+
+		// if all lines are different then break out of loop
+		if (readLines[0] != readLines[1] && readLines[0] != readLines[2] && readLines[0] != readLines[3] && readLines[1] != readLines[2] && readLines[1] != readLines[3] && readLines[2] != readLines[3]) {
+			isMatching = false;
+		}
 	}
 
 	return true;
