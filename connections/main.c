@@ -39,6 +39,10 @@ int main(int argc, char* argv[]) {
     NODE* head = NULL;
     GAME_STATE gameState;
     HIGHSCORE highScores;
+    initializeHighscores(&highScores);
+
+    addScore(&highScores, "Alice", 500); //added scores for testing
+    addScore(&highScores, "Bob", 300);     //added scores for testing
     int choice;
 
     do {
@@ -67,7 +71,7 @@ int main(int argc, char* argv[]) {
 
         case 2:
             // Print highscores (implement this function as needed)
-            // printHighscores(highscore);
+            printHighscores(highScores);
             break;
 
         case 3:
