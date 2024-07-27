@@ -68,6 +68,8 @@ void processGuess(GAME_STATE* gameState)
     // at the same time it puts each word into a string and capitalizes everything
     do {
         resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
+        // prompt the user for a guess - example "red blue green yellow"
+        printf("Enter your guess (words separated by spaces): ");
         if (getUserInputGuess(guess, MAXBUFFER)) {
             // Exit command received
             gameState->isGameOver = true; // Set the flag to true
@@ -175,8 +177,6 @@ int splitGuessIntoWords(char* guess, char* splitGuess[], int max_words_per_guess
 
 bool getUserInputGuess(char* guess, int size)
 {
-    // prompt the user for a guess - example "red blue green yellow"
-    printf("Enter your guess (words separated by spaces): ");
     fgets(guess, size, stdin);
     guess[strcspn(guess, "\n")] = '\0'; // remove newline character
 
