@@ -32,3 +32,7 @@ bool createListTest(void) {
 
 	printf("test passed\n");
 }
+
+void runAllListTests() {
+	createListTest();
+}

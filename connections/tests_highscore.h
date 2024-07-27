@@ -14,9 +14,4 @@ void test_verify_highscore_display();
 void test_replace_highscore();
 
 // function to run all test cases
-int run_highscore_tests() {
-    test_save_and_load_highscore();
-    test_verify_highscore_display();
-    test_replace_highscore();
-    return 0; 
-}
+void runAllHighscoreTests();

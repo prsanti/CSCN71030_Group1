@@ -14,6 +14,7 @@
 #include "tests_file.h"
 #include "tests_list.h"
 #include "tests_game.h"
+#include "tests_highscore.h"
 
 // function definition
 void runTests(void);

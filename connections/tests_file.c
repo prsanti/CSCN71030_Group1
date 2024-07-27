@@ -93,3 +93,9 @@ bool loadDataTest(void) {
 		return false;
 	}
 }
+
+void runAllFileTests() {
+	countLinesTest();
+	getRandomLineTest();
+	loadDataTest();
+}

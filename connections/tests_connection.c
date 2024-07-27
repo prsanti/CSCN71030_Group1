@@ -34,3 +34,7 @@ bool createConnectionTest(void) {
 		return false;
 	}
 }
+
+void runAllConnectionTests() {
+	createConnectionTest();
+}

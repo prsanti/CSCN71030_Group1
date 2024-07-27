@@ -12,3 +12,6 @@ bool getRandomLineTest(void);
 
 // Test case: REQ_IO_003
 bool loadDataTest(void);
+
+// run all file tests
+void runAllFileTests();
