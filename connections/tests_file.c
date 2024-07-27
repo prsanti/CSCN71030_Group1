@@ -6,7 +6,7 @@
 bool countLinesTest(void) {
 	printf("REQ_IO_001\n");
 	printf("Count total lines from text file data shall be tested. \n");
-	int expected = 44;
+	int expected = 48;
 
 	FILE* fp = fopen(FILENAME, "r");
 	if (fp == NULL) {
