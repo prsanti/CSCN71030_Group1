@@ -1,11 +1,8 @@
 #include "tests_game.h"
 
-// Mock or sample data for testing
+// Mock data for testing
 NODE sampleNode1 = { .c = {.words = {"red", "blue", "green", "yellow"}, .wasGuessed = false }, .next = NULL };
-// A sample node with predefined words and a wasGuessed flag set to false
-
 NODE sampleNode2 = { .c = {.words = {"apple", "banana", "cherry", "date"}, .wasGuessed = false }, .next = NULL };
-// Another sample node for linked list testing
 
 // Test case: REQ_GM_001
 void test_initializeGame() {
@@ -13,7 +10,7 @@ void test_initializeGame() {
     HIGHSCORE highscore;        // Declare a HIGHSCORE variable to store the highscore data
     sampleNode1.next = &sampleNode2;  // Link sampleNode1 to sampleNode2
 
-    initializeGame(&gameState, &sampleNode1, &highscore);  // Initialize the game state with the sample nodes and highscore
+    initializeGame(&gameState, &sampleNode1, &highscore, "karl");  // Initialize the game state with the sample nodes and highscore
 
     // Check if the game state is initialized correctly
     if (strcmp(gameState.player.name, "samplePlayer") == 0 &&
