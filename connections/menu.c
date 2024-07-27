@@ -10,7 +10,12 @@ int displayMenu() {
     printf("2) Show Highscores\n");
     printf("3) Exit\n");
     printf("Enter choice: ");
-    scanf("%d", &choice);
+
+    while (scanf("%d", &choice) != 1) {
+        //clear the input buffer
+        while (getchar() != '\n') continue;
+        printf("Invalid input. Please enter a number between 1 and 3: ");
+    }
 
     return choice;
 }
