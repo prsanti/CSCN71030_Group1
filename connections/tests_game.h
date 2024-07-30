@@ -4,10 +4,6 @@
 #include <stdio.h>        
 #include "game.h"        
 
-// Mock data for testing
-NODE sampleNode1 = { .c = {.words = {"red", "blue", "green", "yellow"}, .wasGuessed = false }, .next = NULL };
-NODE sampleNode2 = { .c = {.words = {"apple", "banana", "cherry", "date"}, .wasGuessed = false }, .next = NULL };
-
 // Test case: REQ_GM_001
 void test_initializeGame();
 

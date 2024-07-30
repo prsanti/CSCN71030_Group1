@@ -19,11 +19,11 @@ int displayMenu() {
     }
     else {
         choice = 0; // Default value if input failed
-    while (scanf("%d", &choice) != 1) {
-        //clear the input buffer
-        while (getchar() != '\n') continue;
-        printf("Invalid input. Please enter a number between 1 and 3: ");
+        while (scanf("%d", &choice) != 1) {
+            //clear the input buffer
+            while (getchar() != '\n') continue;
+            printf("Invalid input. Please enter a number between 1 and 3: ");
+        }
     }
-
     return choice;
 }

@@ -1,19 +1,16 @@
 #include "tests_game.h"
 
-// Mock or sample data for testing
+// Mock data for testing
 NODE sampleNode1 = { .c = {.words = {"red", "blue", "green", "yellow"}, .wasGuessed = false }, .next = NULL };
-// A sample node with predefined words and a wasGuessed flag set to false
-
 NODE sampleNode2 = { .c = {.words = {"apple", "banana", "cherry", "date"}, .wasGuessed = false }, .next = NULL };
-// Another sample node for linked list testing
 
 // Test case: REQ_GM_001
 void test_initializeGame() {
-    GAME_STATE gameState;       // Declare a GAME_STATE variable to store the game state
-    HIGHSCORE highscore;        // Declare a HIGHSCORE variable to store the highscore data
+    GAME_STATE gameState; 
+    HIGHSCORE highscore; 
     sampleNode1.next = &sampleNode2;  // Link sampleNode1 to sampleNode2
 
-    initializeGame(&gameState, &sampleNode1, &highscore);  // Initialize the game state with the sample nodes and highscore
+    initializeGame(&gameState, &sampleNode1, &highscore, "samplePlayer");  // Initialize the game state with the sample nodes and highscore
 
     // Check if the game state is initialized correctly
     if (strcmp(gameState.player.name, "samplePlayer") == 0 &&
@@ -126,13 +123,11 @@ void test_isGuessAConnection() {
 
 // Main function to run all tests
 int runAllGameTests() {
-    test_initializeGame();       // Run test for game initialization
-    test_processCorrectGuess();  // Run test for processing correct guesses
-    test_processIncorrectGuess();  // Run test for processing incorrect guesses
-    test_splitGuessIntoWords();  // Run test for splitting guesses into words
-    test_capitalizeString();     // Run test for capitalizing strings
-    test_isGuessAConnection();   // Run test for validating guesses against connections
-
-    printf("All tests completed!\n");  // Print a message indicating all tests are complete
+    test_initializeGame();
+    test_processCorrectGuess();  
+    test_processIncorrectGuess();  
+    test_splitGuessIntoWords();  
+    test_capitalizeString();     
+    test_isGuessAConnection();
     return 0;  // Return success code
 }

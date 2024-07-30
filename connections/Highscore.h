@@ -1,7 +1,7 @@
 #pragma once
 #include "connection.h"//for maxword
 
-#define MAX_SCORES 10
+#define MAX_SCORES 5
 
 // players struct has a category name and score
 typedef struct players{
