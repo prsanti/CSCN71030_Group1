@@ -2,6 +2,7 @@
 #include "connection.h"//for maxword
 
 #define MAX_SCORES 5
+#define MAX_NAME_LENGTH 30
 
 // players struct has a category name and score
 typedef struct players{
@@ -19,3 +20,4 @@ void addScore(HIGHSCORE* s, char* playerName, int score);
 void printHighscores(HIGHSCORE s); 
 void saveHighscores(HIGHSCORE s, const char* filename);
 void loadHighscores(HIGHSCORE* s, const char* filename);
+void sortHighscores(HIGHSCORE* highscore);

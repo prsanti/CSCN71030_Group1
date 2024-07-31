@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     GAME_STATE gameState;
     HIGHSCORE highScores;
     initializeHighscores(&highScores);
-
+    loadHighscores(&highScores, "highscores.txt");
     addScore(&highScores, "Alice", 500); //added scores for testing
     addScore(&highScores, "Bob", 300);     //added scores for testing
     int choice;
