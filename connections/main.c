@@ -65,6 +65,8 @@ int main(int argc, char* argv[]) {
             // Initialize and start the game
             initializeGame(&gameState, head, &highScores, username);
             startGame(&gameState, &highScores);
+            saveHighscores(highScores, "highscores.txt");
+
 
             // Free the linked list after the game ends
             deleteNode(head);

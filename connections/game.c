@@ -47,7 +47,6 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 
             // Save current high score to file
             addScore(highscore, gameState->player.name, gameState->player.score);
-            saveHighscores(*highscore, "highscores.txt");
 
             printf("Your streak: %d\n", gameState->player.score);
 
@@ -60,7 +59,6 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 
             // Save current high score to file
             addScore(highscore, gameState->player.name, gameState->player.score);
-            saveHighscores(*highscore, "highscores.txt");
 
             printf("Your streak: %d\n", gameState->player.score);
 
@@ -76,11 +74,11 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 
             // Save current high score to file
             addScore(highscore, gameState->player.name, gameState->player.score);
-            saveHighscores(*highscore, "highscores.txt");
 
+            // delete the old connection data
             deleteNode(gameState->head);
             gameState->head = NULL;
-
+            // create new connection data
             CONNECTION* nextGameArr[TOTALCONNECTIONS];
 
             gameState->head = (NODE*)malloc(sizeof(NODE));
@@ -89,7 +87,6 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
                 exit(EXIT_FAILURE);
             }
 
-
             // Load new connection data for a new round
             if (!loadData(FILE, nextGameArr)) {
                 fprintf(stderr, "Error loading new connection data.\n");
@@ -97,10 +94,7 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
             }
 
             createList(gameState->head, nextGameArr);
-
             initializeConnections(gameState->head);
-
-            // Prepare the game state for the next round
             storeShuffledWords(gameState);  
 
             // Continue with the same lives and incremented streak
