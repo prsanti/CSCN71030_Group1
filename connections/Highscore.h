@@ -6,7 +6,7 @@
 // players struct has a category name and score
 typedef struct players{
     char name[MAXWORD];
-    int score;
+    int score;      // streak
 } PLAYER;
 // highscore struct has a category name and score
 typedef struct highscore {

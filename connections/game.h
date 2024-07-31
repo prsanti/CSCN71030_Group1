@@ -45,7 +45,7 @@ void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore, con
 void initializeConnections(NODE* head);
 
 // Game Loop Management
-void startGame(GAME_STATE* gameState, HIGHSCORE* highscore);
+int startGame(GAME_STATE* gameState, HIGHSCORE* highscore);
 void processGuess(GAME_STATE* gameState);
 
 // Input Handling
@@ -68,9 +68,6 @@ void capitalizeString(char* str);
 
 void shuffleArray(char* array[], int size);
 
-
-void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState);
-void endGameHighScore(GAME_STATE* gameState, HIGHSCORE* highscore);
 
 bool areAllConnectionsGuessed(NODE* head);
 

@@ -21,7 +21,6 @@ void addScore(HIGHSCORE* s, char* playerName, int score) {
         s->scores[s->numscores].score = score;
         s->numscores++;
     }
-  
 }
 
 // Prints the high scores list
