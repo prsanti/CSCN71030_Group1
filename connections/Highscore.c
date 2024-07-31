@@ -13,16 +13,60 @@ void initializeHighscores(HIGHSCORE* s) {
     }
 }
 
-// Adds a new score to the high scores list
-
-void addScore(HIGHSCORE* s, char* playerName, int score) {
-    if (s->numscores < MAX_SCORES) {
-        strcpy(s->scores[s->numscores].name, playerName);
-        s->scores[s->numscores].score = score;
-        s->numscores++;
+// Sort the high scores
+void sortHighscores(HIGHSCORE* highscore) {
+    for (int i = 0; i < highscore->numscores - 1; i++) {
+        for (int j = 0; j < highscore->numscores - i - 1; j++) {
+            if (highscore->scores[j].score < highscore->scores[j + 1].score) {
+                // Swap the scores
+                PLAYER temp = highscore->scores[j];
+                highscore->scores[j] = highscore->scores[j + 1];
+                highscore->scores[j + 1] = temp;
+            }
+        }
     }
-  
 }
+
+// Adds a new score to the high scores list
+void addScore(HIGHSCORE* highscore, const char* playerName, int score) {
+    // Check if the player already has a score recorded
+    for (int i = 0; i < highscore->numscores; i++) {
+        if (strcmp(highscore->scores[i].name, playerName) == 0) {
+            // If the player already exists, update their score if the new score is higher
+            if (score > highscore->scores[i].score) {
+                highscore->scores[i].score = score;
+                sortHighscores(highscore); // Sort after updating score
+            }
+            return;
+        }
+    }
+
+    // If the player does not exist in the high scores
+    if (highscore->numscores < MAX_SCORES) {
+        // There's space in the high score list, add the new score
+        strncpy(highscore->scores[highscore->numscores].name, playerName, MAX_NAME_LENGTH);
+        highscore->scores[highscore->numscores].score = score;
+        highscore->numscores++;
+        sortHighscores(highscore); // Sort after adding a new score
+    }
+    else {
+        // Find the lowest score in the list
+        int minIndex = 0;
+        for (int i = 1; i < highscore->numscores; i++) {
+            if (highscore->scores[i].score < highscore->scores[minIndex].score) {
+                minIndex = i;
+            }
+        }
+
+        // Replace the lowest score if the new score is higher
+        if (score > highscore->scores[minIndex].score) {
+            strncpy(highscore->scores[minIndex].name, playerName, MAX_NAME_LENGTH);
+            highscore->scores[minIndex].score = score;
+            sortHighscores(highscore); // Sort after replacing the score
+        }
+    }
+}
+
 
 // Prints the high scores list
 void printHighscores(HIGHSCORE s) {

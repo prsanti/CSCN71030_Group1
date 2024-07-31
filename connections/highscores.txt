@@ -1,5 +1,3 @@
-samplePlayer 20
-karl 40
-freak 40
-freak 0
-freak 0
+FreakyVillar 5
+karl 3
+iggy2freaky 1

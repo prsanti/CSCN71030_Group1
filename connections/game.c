@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.h"
+#define FILE "connectionsData.txt"
 
 
 void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore, const char* username)
@@ -18,6 +19,12 @@ void initializeGame(GAME_STATE* gameState, NODE* head, HIGHSCORE* highscore, con
     storeShuffledWords(gameState);
 }
 
+void startNextGame(GAME_STATE* gameState, NODE* head)
+{
+    gameState->head = head; // set the connections
+    storeShuffledWords(gameState);
+}
+
 void initializeConnections(NODE* head)
 {
     NODE* currentNode = head;
@@ -27,33 +34,97 @@ void initializeConnections(NODE* head)
     }
 }
 
-void startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
+int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 {
-    while (!gameState->isGameOver) 
+    while (1) // Infinite loop to keep the game running until user exits
     {
-        printGameState(gameState); // print the game
-        processGuess(gameState);   // get a guess and process it
+        printGameState(gameState);
+        processGuess(gameState); // Get a guess and process it
 
         if (gameState->isGameOver) // Check if the game is over due to "EXIT" command
         {
             printf("Exiting the game...\n");
-            endGameHighScore(gameState, highscore); // End the game and handle high scores
-            return; // Exit the loop and function
+
+            // Save current high score to file
+            addScore(highscore, gameState->player.name, gameState->player.score);
+
+            return 3; // Exit code for game exit
         }
-        if (gameState->lives <= 0) // after 4 lives are finished game is done
+
+        if (gameState->lives <= 0) // No lives left, game is over
         {
             printf("No lives left, Game Over!\n");
-            endGameHighScore(gameState, highscore); // End the game and handle high scores
-            return; // Exit the loop and function
+
+            // Save current high score to file
+            addScore(highscore, gameState->player.name, gameState->player.score);
+
+            return 2; // Exit code for game over (no lives)
         }
-        if (areAllConnectionsGuessed(gameState->head)) // Check if all connections are guessed
+
+        if (areAllConnectionsGuessed(gameState->head)) // All connections guessed
         {
             printf("Congratulations! You've guessed all connections correctly!\n");
-            endGameHighScore(gameState, highscore); // End the game and handle high scores
-            return; // Exit the loop and function
+
+            // Increment the streak
+            gameState->player.score++;
+
+            // Save current high score to file
+            addScore(highscore, gameState->player.name, gameState->player.score);
+
+            // delete the old connection data
+            deleteNode(gameState->head);
+            gameState->head = NULL;
+            // create new connection data
+            CONNECTION* nextGameArr[TOTALCONNECTIONS];
+
+            gameState->head = (NODE*)malloc(sizeof(NODE));
+            if (gameState->head == NULL) {
+                fprintf(stderr, "Error allocating memory for head node\n");
+                exit(EXIT_FAILURE);
+            }
+
+            // Load new connection data for a new round
+            if (!loadData(FILE, nextGameArr)) {
+                fprintf(stderr, "Error loading new connection data.\n");
+                return 4; // Exit code for data load failure
+            }
+
+            createList(gameState->head, nextGameArr);
+            initializeConnections(gameState->head);
+            storeShuffledWords(gameState);  
+
+            // Continue with the same lives and incremented streak
+
+            printf("\n\n******NEW GAME******\n");
+
+            printf("Lives remaining: %d\n", gameState->lives);
         }
     }
 }
+
+
+ bool areAllConnectionsGuessed(NODE* head) {
+     NODE* currentNode = head;
+     int guessedCount = 0;
+
+     while (currentNode != NULL) {
+         if (currentNode->c.wasGuessed) {
+             guessedCount++;
+             if (guessedCount == TOTALCONNECTIONS) {
+                 printf("All connections have been guessed!\n"); // Debug output
+                 return true; // All connections (4) are guessed
+             }
+         }
+         currentNode = currentNode->next;
+     }
+
+     printf("Not all connections guessed yet.\n"); // Debug output
+     return false; // Less than 4 connections guessed
+ }
+
+
+
+
 
 void processGuess(GAME_STATE* gameState)
 {
@@ -69,8 +140,8 @@ void processGuess(GAME_STATE* gameState)
     do {
         resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
         // prompt the user for a guess - example "red blue green yellow"
-        printf("Enter your guess (words separated by spaces): ");
-        if (getUserInputGuess(guess, MAXBUFFER)) {
+        printf("Enter your guess (words separated by spaces), type 'exit' to quit: ");
+        if (getUserInputGuess(guess, MAXBUFFER)) {  // if user enters exit command "exit"
             // Exit command received
             gameState->isGameOver = true; // Set the flag to true
             return; // Exit the function
@@ -95,6 +166,8 @@ void processGuess(GAME_STATE* gameState)
         handleIncorrectGuess(gameState);
     }
 }
+
+
 
 void handleCorrectGuess(GAME_STATE* gameState, GUESS_RESULT guessResult)
 {
@@ -147,7 +220,6 @@ void printGameState(const GAME_STATE* gameState) {
     }
 }
 
-
 void shuffleArray(char* array[], int size) {
     for (int i = size - 1; i > 0; i--) {
         int j = rand() % (i + 1);
@@ -181,14 +253,19 @@ bool getUserInputGuess(char* guess, int size)
     guess[strcspn(guess, "\n")] = '\0'; // remove newline character
 
     // Check if the user entered the exit command
-    if (strcmp(guess, "EXIT") == 0) {
+    if (strcmp(guess, "exit") == 0) {
         return true; // Return true to indicate an exit command
     }
     return false; // No exit command
 }
 
 
-// BUG - works only if user types in 4 guesses, otherwise theres an issue.
+
+
+
+
+
+
 // check if each word in the split word array is in a connection (PROCESS 1 guess)
 GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
 {
@@ -214,7 +291,6 @@ GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
                 }
             }
         }
-
         // If all guessed words match the connection, mark it as a valid connection
         if (matchCount == MAX_WORDS_PER_GUESS)
         {
@@ -232,6 +308,7 @@ GUESS_RESULT isGuessAConnection(GAME_STATE* gameState, char* splitGuess[])
 
  
 
+
 void capitalizeString(char* str)
 {
     while (*str) 
@@ -240,6 +317,7 @@ void capitalizeString(char* str)
         str++;
     }
 }
+
 
 
 // This function is just for helping me test
@@ -266,48 +344,6 @@ void resetGuessBuffers(char guess[], char* splitGuess[], int guessSize, int spli
         splitGuess[i] = NULL;
     }
 }
-
-// Updates high scores with the player's score if it's high enough
-void updateHighscores(HIGHSCORE* highscore, GAME_STATE* gameState) {
-    addScore(highscore, gameState->player.name, gameState->player.score);
-}
-
-// Handles the end of the game, updating and saving high scores
-void endGameHighScore(GAME_STATE* gameState, HIGHSCORE* highscore) {
-    if (areAllConnectionsGuessed(gameState->head)) {
-        gameState->player.score++; // Increment score by 1 for each win
-        printf("Current streak: %d\n", gameState->player.score);
-    }
-    else if (gameState->lives <= 0 || gameState->isGameOver) {
-        gameState->player.score = 0; // Reset streak on game over
-        printf("Streak reset.\n");
-    }
-    updateHighscores(highscore, gameState); // Update high scores with streak
-    printHighscores(*highscore);            // Display high scores
-    saveHighscores(*highscore, "highscores.txt"); // Save high scores
-}
-
-bool areAllConnectionsGuessed(NODE* head) {
-    NODE* currentNode = head;
-    int guessedCount = 0;
-
-    while (currentNode != NULL) {
-        if (currentNode->c.wasGuessed) {
-            guessedCount++;
-            if (guessedCount == TOTALCONNECTIONS) {
-                printf("All connections have been guessed!\n"); // Debug output
-                return true; // All connections (4) are guessed
-            }
-        }
-        currentNode = currentNode->next;
-    }
-
-    printf("Not all connections guessed yet.\n"); // Debug output
-    return false; // Less than 4 connections guessed
-}
-
-
-
 
 void storeShuffledWords(GAME_STATE* gameState) {
     NODE* ptr = gameState->head;
