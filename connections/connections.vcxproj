@@ -134,12 +134,7 @@
     <ClCompile Include="list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="tests_connection.c" />
-    <ClCompile Include="tests_file.c" />
-    <ClCompile Include="tests_game.c" />
     <ClCompile Include="tests.c" />
-    <ClCompile Include="tests_highscore.c" />
-    <ClCompile Include="tests_list.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="connection.h" />
@@ -148,12 +143,7 @@
     <ClInclude Include="Highscore.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="menu.h" />
-    <ClInclude Include="tests_connection.h" />
-    <ClInclude Include="tests_file.h" />
-    <ClInclude Include="tests_game.h" />
     <ClInclude Include="tests.h" />
-    <ClInclude Include="tests_highscore.h" />
-    <ClInclude Include="tests_list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
