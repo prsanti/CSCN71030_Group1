@@ -38,7 +38,7 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 {
     while (1) // Infinite loop to keep the game running until user exits
     {
-        traverse(gameState->head);
+        printGameState(gameState);
         processGuess(gameState); // Get a guess and process it
 
         if (gameState->isGameOver) // Check if the game is over due to "EXIT" command
@@ -47,8 +47,6 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 
             // Save current high score to file
             addScore(highscore, gameState->player.name, gameState->player.score);
-
-            printf("Your streak: %d\n", gameState->player.score);
 
             return 3; // Exit code for game exit
         }
@@ -59,8 +57,6 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
 
             // Save current high score to file
             addScore(highscore, gameState->player.name, gameState->player.score);
-
-            printf("Your streak: %d\n", gameState->player.score);
 
             return 2; // Exit code for game over (no lives)
         }
@@ -98,9 +94,9 @@ int startGame(GAME_STATE* gameState, HIGHSCORE* highscore)
             storeShuffledWords(gameState);  
 
             // Continue with the same lives and incremented streak
+
             printf("\n\n******NEW GAME******\n");
 
-            printf("Your streak: %d\n", gameState->player.score);
             printf("Lives remaining: %d\n", gameState->lives);
         }
     }
@@ -144,8 +140,8 @@ void processGuess(GAME_STATE* gameState)
     do {
         resetGuessBuffers(guess, splitGuess, MAXBUFFER, MAX_WORDS_PER_GUESS);
         // prompt the user for a guess - example "red blue green yellow"
-        printf("Enter your guess (words separated by spaces): ");
-        if (getUserInputGuess(guess, MAXBUFFER)) {  // if user enters exit command "EXIT"
+        printf("Enter your guess (words separated by spaces), type 'exit' to quit: ");
+        if (getUserInputGuess(guess, MAXBUFFER)) {  // if user enters exit command "exit"
             // Exit command received
             gameState->isGameOver = true; // Set the flag to true
             return; // Exit the function
@@ -257,7 +253,7 @@ bool getUserInputGuess(char* guess, int size)
     guess[strcspn(guess, "\n")] = '\0'; // remove newline character
 
     // Check if the user entered the exit command
-    if (strcmp(guess, "EXIT") == 0) {
+    if (strcmp(guess, "exit") == 0) {
         return true; // Return true to indicate an exit command
     }
     return false; // No exit command
